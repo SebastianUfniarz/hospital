@@ -1,0 +1,50 @@
+.root {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    flex-grow: 1;
+    padding: 16px;
+}
+
+.logo {
+    margin-inline-end: 16px;
+}
+
+.heading {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.nav {
+    height: 100%;
+    display: flex;
+}
+
+.nav>a {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-inline: 16px;
+    text-decoration: none;
+
+    &:is(:link, :visited) {
+        color: currentColor;
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.activeNav {
+    /* border-bottom: 3px solid hsl(217, 89%, 82%); */
+    font-weight: bold;
+    text-decoration: underline !important;
+}

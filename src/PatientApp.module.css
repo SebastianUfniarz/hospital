@@ -1,0 +1,11 @@
+.wrapper {
+    display: flex;
+    flex-grow: 1;
+}
+
+.leftRight {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    contain: strict;
+}

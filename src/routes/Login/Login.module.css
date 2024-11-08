@@ -1,0 +1,75 @@
+.root {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.appHeader {
+    position: fixed;
+}
+
+.container {
+    margin: 0 auto;
+    width: 400px;
+    padding: 32px;
+    border-radius: 28px;
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.heading {
+    margin: 16px 0;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.textInput {
+    width: 100%;
+    padding: 16px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 1px solid #8E918F;
+    background-color: transparent;
+}
+
+.checkboxContainer {
+    margin: 8px 0;
+    font-size: 0.875em;
+}
+
+.checkbox {
+    margin-right: 8px;
+}
+
+.btn {
+    width: 100%;
+    padding: 14px 24px;
+    margin: 16px 0;
+    background-color: hsl(217, 89%, 82%);
+    border-radius: 20px;
+    border: 0;
+    color: rgb(14, 14, 14);
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: hsl(217, 89%, 84%);
+}
+
+.btn:active {
+    background-color: hsl(217, 89%, 87%);
+}
+
+.suggestion {
+    font-size: 0.875em;
+}
+
+.registerLink {
+    text-decoration: none;
+    color: hsl(217, 89%, 82%);
+}
+
+.registerLink:hover {
+    text-decoration: underline;
+}
