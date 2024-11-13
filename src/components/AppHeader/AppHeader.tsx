@@ -10,19 +10,19 @@ interface IProps {
 
 const links = [
     {
-        pathname: "/app/reserve_visit",
+        pathname: "/patient/reserve_visit",
         name: "Rezerwacja wizyty",
     },
     {
-        pathname: "/app/my_visits",
+        pathname: "/patient/my_visits",
         name: "Moje wizyty",
     },
     {
-        pathname: "/app/treatment_history",
+        pathname: "/patient/treatment_history",
         name: "Historia leczenia",
     },
     {
-        pathname: "/app/my_data",
+        pathname: "/patient/my_data",
         name: "Moje dane",
     },
     {

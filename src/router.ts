@@ -14,12 +14,12 @@ const router = createBrowserRouter([
         ErrorBoundary: ErrorPage,
         children: [
             {
-                path: "/app",
+                path: "/patient",
                 Component: MainRoute,
                 ErrorBoundary: ErrorPage,
             },
             {
-                path: "/app/reserve_visit",
+                path: "/patient/reserve_visit",
                 Component: ReserveVisit,
                 ErrorBoundary: ErrorPage,
             },

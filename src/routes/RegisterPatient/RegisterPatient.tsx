@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
+import { FormEvent, useState } from "react";
 
 import styles from "./RegisterPatient.module.css";
-import AppHeader from "../../components/AppHeader/AppHeader";
-import { FormEvent, useState } from "react";
 
 const RegisterPatient: React.FC = () => {
     const [isNext, setNext] = useState(false);
@@ -14,7 +13,6 @@ const RegisterPatient: React.FC = () => {
 
     return (
         <>
-            <AppHeader className={styles.appHeader} />
             <div className={styles.root}>
                 <div className={styles.container}>
                     <div className={styles.heading}>Rejestracja pacjenta</div>

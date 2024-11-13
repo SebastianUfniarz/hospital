@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
 
 import styles from "./Login.module.css";
-import AppHeader from "../../components/AppHeader/AppHeader";
 
 const Login: React.FC = () => {
     return (
         <>
-            <AppHeader className={styles.appHeader} />
             <div className={styles.root}>
                 <form className={styles.container}>
                     <div className={styles.heading}>Logowanie</div>
