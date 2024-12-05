@@ -7,6 +7,8 @@ import RegisterPatient from "./routes/RegisterPatient/RegisterPatient.tsx";
 import PatientApp from "./PatientApp.tsx";
 import LandingPage from "./routes/LandingPage/LandingPage.tsx";
 import ReserveVisit from "./routes/ReserveVisit/ReserveVisit.tsx";
+import DoctorApp from "./DoctorApp.tsx";
+import MyData from "./routes/MyData/MyData.tsx";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +23,22 @@ const router = createBrowserRouter([
             {
                 path: "/patient/reserve_visit",
                 Component: ReserveVisit,
+                ErrorBoundary: ErrorPage,
+            },
+            {
+                path: "/patient/my_data",
+                Component: MyData,
+                ErrorBoundary: ErrorPage,
+            },
+        ],
+    },
+    {
+        Component: DoctorApp,
+        ErrorBoundary: ErrorPage,
+        children: [
+            {
+                path: "/doctor",
+                Component: MainRoute,
                 ErrorBoundary: ErrorPage,
             },
         ],

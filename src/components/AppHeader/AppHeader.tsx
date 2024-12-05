@@ -6,32 +6,13 @@ import styles from "./AppHeader.module.css";
 
 interface IProps {
     className?: string;
+    links: {
+        pathname: string;
+        name: string;
+    }[];
 }
 
-const links = [
-    {
-        pathname: "/patient/reserve_visit",
-        name: "Rezerwacja wizyty",
-    },
-    {
-        pathname: "/patient/my_visits",
-        name: "Moje wizyty",
-    },
-    {
-        pathname: "/patient/treatment_history",
-        name: "Historia leczenia",
-    },
-    {
-        pathname: "/patient/my_data",
-        name: "Moje dane",
-    },
-    {
-        pathname: "/logout",
-        name: "Wyloguj się",
-    },
-];
-
-const AppHeader: React.FC<IProps> = ({ className }) => {
+const AppHeader: React.FC<IProps> = ({ className, links }) => {
     const location = useLocation();
     console.log(location);
 

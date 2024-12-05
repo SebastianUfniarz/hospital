@@ -5,22 +5,105 @@
 }
 
 :root {
-    font-family: sans-serif;
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    line-height: 1.5;
-    background-color: #242424;
+    color-scheme: dark;
+
+    --text-color-primary: hsla(0, 0%, 100%, 0.87);
+    --text-color-inverted: hsl(208, 37%, 20%);
+    --bg-primary: hsl(0, 0%, 14%);
+    --bg-secondary: hsl(0, 0%, 18%);
+    --bg-tertiary: hsla(0, 0%, 0%, 0.071);
+    --accent-color: hsl(120, 19%, 40%);
+    --accent-text-color: var(--text-color-primary);
+    --border-color: hsl(0, 0%, 19%);
+    --border-color2: hsla(0, 0%, 100%, 0.25);
+    --primary-btn-color: hsl(217, 89%, 82%);
+    --primary-btn-hover-color: hsl(217, 89%, 84%);
+    --primary-btn-active-color: hsl(217, 89%, 87%);
+    --primary-btn-text-color: var(--text-color-inverted);
+    --icon-btn-hover-color: var(--bg-secondary);
+    --icon-btn-active-color: hsl(0, 0%, 21%);
+    --input-border-color: hsl(140, 1%, 56%);
+
+    --appheader-bg: var(--bg-primary);
+    --sidebar-bg: var(--bg-primary);
+    --searchbar-bg: var(--bg-tertiary);
+    --alt-navbar-bg: var(--bg-secondary);
 }
 
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #213547;
-        background-color: #ffffff;
+.lightTheme:root {
+    color-scheme: light;
+
+    --text-color-primary: hsl(208, 37%, 20%);
+    --text-color-inverted: hsla(0, 0%, 100%, 0.87);
+    --bg-primary: hsl(0, 0%, 100%);
+    --bg-secondary: hsl(213, 43%, 96%);
+    --bg-tertiary: hsla(0, 0%, 100%, 0.071);
+    --accent-color: hsl(120, 19%, 46%);
+    --accent-text-color: var(--text-color-inverted);
+    --border-color: hsl(0, 0%, 92%);
+    --border-color2: var(--border-color);
+    --primary-btn-color: hsl(217, 90%, 43%);
+    --primary-btn-hover-color: hsl(217, 90%, 45%);
+    --primary-btn-active-color: hsl(217, 90%, 40%);
+    --primary-btn-text-color: white;
+    --icon-btn-hover-color: var(--bg-secondary);
+    --icon-btn-active-color: hsl(213, 43%, 92%);
+    --input-border-color: hsl(140, 1%, 56%);
+
+    --appheader-bg: var(--bg-primary);
+    --sidebar-bg: var(--bg-primary);
+    --searchbar-bg: var(--bg-secondary);
+    --alt-navbar-bg: var(--bg-primary);
+}
+
+.highContrastTheme:root {
+    color-scheme: dark;
+
+    --text-color-primary: white;
+    --text-color-inverted: black;
+    --bg-primary: black;
+    --bg-secondary: black;
+    --bg-tertiary: orange;
+    --accent-color: transparent;
+    --accent-text-color: var(--text-color-primary);
+    --border-color: white;
+    --border-color2: white;
+    --primary-btn-color: yellow;
+    --primary-btn-hover-color: white;
+    --primary-btn-active-color: hsl(217, 89%, 87%);
+    --primary-btn-text-color: var(--text-color-inverted);
+    --icon-btn-hover-color: var(--bg-secondary);
+    --icon-btn-active-color: transparent;
+    --input-border-color: white;
+
+    --appheader-bg: var(--bg-primary);
+    --sidebar-bg: var(--bg-primary);
+    --searchbar-bg: var(--bg-secondary);
+    --alt-navbar-bg: var(--bg-secondary);
+
+    a,
+    button,
+    label {
+        color: yellow;
+    }
+
+    a:hover,
+    button:hover,
+    label:hover {
+        outline: 2px solid white;
+    }
+
+    input[type="radio"] {
+        accent-color: yellow;
     }
 }
 
 body {
     margin: 0;
+    font-family: sans-serif;
+    line-height: 1.5;
+    color: var(--text-color-primary);
+    background-color: var(--bg-primary);
 }
 
 #root {

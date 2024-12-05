@@ -7,11 +7,11 @@ import AppHeader from "./components/AppHeader/AppHeader";
 const links = [
     {
         pathname: "/patient/reserve_visit",
-        name: "Rezerwacja wizyty",
+        name: "Mój harmonogram",
     },
     {
         pathname: "/patient/my_visits",
-        name: "Moje wizyty",
+        name: "Moi pacjenci",
     },
     {
         pathname: "/patient/treatment_history",
@@ -27,7 +27,7 @@ const links = [
     },
 ];
 
-const PatientApp: React.FC = () => {
+const DoctorApp: React.FC = () => {
     return (
         <>
             <AppHeader className={styles.appHeader} links={links} />
@@ -42,4 +42,4 @@ const PatientApp: React.FC = () => {
     );
 };
 
-export default PatientApp;
+export default DoctorApp;
