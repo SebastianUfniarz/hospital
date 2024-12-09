@@ -6,10 +6,6 @@
     background-color: var(--bg-secondary);
 }
 
-.appHeader {
-    position: fixed;
-}
-
 .container {
     margin: 0 auto;
     width: 400px;
@@ -79,4 +75,15 @@
 
 .link:hover {
     text-decoration: underline;
+}
+
+.errorMessage {
+    display: flex;
+    align-items: center;
+    font-size: 0.875em;
+    color: red;
+}
+
+.errorMessage>svg {
+    margin-right: 4px;
 }

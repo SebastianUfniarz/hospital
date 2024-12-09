@@ -1,0 +1,17 @@
+.root {
+    padding: 8px;
+    line-height: 0;
+    border: 0;
+    background-color: inherit;
+    cursor: pointer;
+    border-radius: 64px;
+    transition: .2s background-color;
+}
+
+.root:hover {
+    background-color: var(--icon-btn-hover-color);
+}
+
+.root:active {
+    background-color: var(--icon-btn-active-color);
+}
