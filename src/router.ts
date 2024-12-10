@@ -1,16 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import PatientApp from "./PatientApp.tsx";
+import DoctorApp from "./DoctorApp.tsx";
 import ErrorPage from "./routes/ErrorPage.tsx";
 import MainRoute from "./routes/MainRoute/MainRoute.tsx";
 import Login from "./routes/Login/Login.tsx";
 import RegisterPatient from "./routes/RegisterPatient/RegisterPatient.tsx";
-import PatientApp from "./PatientApp.tsx";
 import LandingPage from "./routes/LandingPage/LandingPage.tsx";
 import ReserveVisit from "./routes/ReserveVisit/ReserveVisit.tsx";
-import DoctorApp from "./DoctorApp.tsx";
 import MyData from "./routes/MyData/MyData.tsx";
 import ChangePassword from "./routes/ChangePassword/ChangePassword.tsx";
 import DoctorSchedule from "./routes/DoctorSchedule/DoctorSchedule.tsx";
+import Logout from "./routes/Logout/Logout.tsx";
 
 const router = createBrowserRouter([
     {
@@ -68,6 +69,11 @@ const router = createBrowserRouter([
     {
         path: "/change_password",
         Component: ChangePassword,
+        ErrorBoundary: ErrorPage,
+    },
+    {
+        path: "/logout",
+        Component: Logout,
         ErrorBoundary: ErrorPage,
     },
 ]);
