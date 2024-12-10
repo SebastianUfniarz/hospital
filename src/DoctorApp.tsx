@@ -6,19 +6,19 @@ import AppHeader from "./components/AppHeader/AppHeader";
 
 const links = [
     {
-        pathname: "/patient/reserve_visit",
+        pathname: "/doctor/schedule",
         name: "Mój harmonogram",
     },
     {
-        pathname: "/patient/my_visits",
+        pathname: "/doctor/my_patients",
         name: "Moi pacjenci",
     },
     {
-        pathname: "/patient/treatment_history",
+        pathname: "/doctor/treatment_history",
         name: "Historia leczenia",
     },
     {
-        pathname: "/patient/my_data",
+        pathname: "/doctor/my_data",
         name: "Moje dane",
     },
     {
@@ -30,7 +30,7 @@ const links = [
 const DoctorApp: React.FC = () => {
     return (
         <>
-            <AppHeader className={styles.appHeader} links={links} />
+            <AppHeader links={links} />
             <div className={styles.wrapper}>
                 <div className={styles.leftRight}>
                     <Suspense>

@@ -30,7 +30,7 @@ const links = [
 const PatientApp: React.FC = () => {
     return (
         <>
-            <AppHeader className={styles.appHeader} links={links} />
+            <AppHeader links={links} />
             <div className={styles.wrapper}>
                 <div className={styles.leftRight}>
                     <Suspense>
