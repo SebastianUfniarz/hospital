@@ -40,7 +40,7 @@
     --bg-tertiary: hsla(0, 0%, 100%, 0.071);
     --accent-color: hsl(120, 19%, 46%);
     --accent-text-color: var(--text-color-inverted);
-    --border-color: hsl(0, 0%, 92%);
+    --border-color: hsl(0, 0%, 85%);
     --border-color2: var(--border-color);
     --primary-btn-color: hsl(217, 90%, 43%);
     --primary-btn-hover-color: hsl(217, 90%, 45%);
