@@ -2,18 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./ReserveVisit.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
-
-interface Doctor {
-    id: number;
-    first_name: string;
-    last_name: string;
-}
+import { IDoctor } from "../../types/IDoctor";
 
 const ReserveVisit: React.FC = () => {
     const supabase = useSupabase();
     const [searchQuery, setSearchQuery] = useState("");
     const [specialization, setSpecialization] = useState("");
-    const [doctors, setDoctors] = useState<Doctor[]>([]);
+    const [doctors, setDoctors] = useState<IDoctor[]>([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
