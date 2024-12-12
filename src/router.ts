@@ -14,6 +14,7 @@ import DoctorSchedule from "./routes/DoctorSchedule/DoctorSchedule.tsx";
 import Logout from "./routes/Logout/Logout.tsx";
 import TreatmentHistory from "./routes/TreatmentHistory/TreatmentHistory.tsx";
 import MyPatients from "./routes/MyPatients/MyPatients.tsx";
+import RegisterDoctor from "./routes/RegisterDoctor/RegisterDoctor.tsx";
 
 const router = createBrowserRouter([
     {
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
                 path: "/doctor/my_patients",
                 Component: MyPatients,
                 ErrorBoundary: ErrorPage,
-            },            
+            },
             {
                 path: "/doctor/schedule",
                 Component: DoctorSchedule,
@@ -76,6 +77,11 @@ const router = createBrowserRouter([
     {
         path: "/register",
         Component: RegisterPatient,
+        ErrorBoundary: ErrorPage,
+    },
+    {
+        path: "/register_doctor",
+        Component: RegisterDoctor,
         ErrorBoundary: ErrorPage,
     },
     {
