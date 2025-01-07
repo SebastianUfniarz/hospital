@@ -2,19 +2,11 @@ import { useEffect, useState } from "react";
 import styles from "./MyData.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
 import { useNavigate } from "react-router-dom";
-
-interface PatientData {
-    first_name: string;
-    last_name: string;
-    pesel: string;
-    birth_date: string;
-    telephone: string;
-    email: string;
-}
+import { IPatient } from "../../types/IPatient";
 
 const MyData: React.FC = () => {
     const supabase = useSupabase();
-    const [patientData, setPatientData] = useState<PatientData | null>(null);
+    const [patientData, setPatientData] = useState<IPatient | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -45,7 +37,7 @@ const MyData: React.FC = () => {
                     .maybeSingle();
 
                 console.log(res);
-                const data = res.data as PatientData | null;
+                const data = res.data as IPatient | null;
 
                 if (res.error) {
                     console.error("Database error:", res.error);

@@ -2,27 +2,29 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./ReserveVisit.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
-
-interface Doctor {
-    id: number;
-    first_name: string;
-    last_name: string;
-}
+import { IDoctor } from "../../types/IDoctor";
 
 const ReserveVisit: React.FC = () => {
     const supabase = useSupabase();
     const [searchQuery, setSearchQuery] = useState("");
-    const [doctors, setDoctors] = useState<Doctor[]>([]);
+    const [specialization, setSpecialization] = useState("");
+    const [doctors, setDoctors] = useState<IDoctor[]>([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const handleSearch = async () => {
             setLoading(true);
             try {
-                const { data, error } = await supabase
-                    .from("doctor")
-                    .select("id, first_name, last_name")
-                    .ilike("last_name", `%${searchQuery}%`);
+                const { data, error } = specialization
+                    ? await supabase
+                        .from("doctor")
+                        .select("id, first_name, last_name, specialization")
+                        .eq("specialization", specialization)
+                        .ilike("last_name", `%${searchQuery}%`)
+                    : await supabase
+                        .from("doctor")
+                        .select("id, first_name, last_name, specialization")
+                        .ilike("last_name", `%${searchQuery}%`);
 
                 if (error) {
                     console.error("Blad podczas wyszukiwania:", error.message);
@@ -36,7 +38,7 @@ const ReserveVisit: React.FC = () => {
             }
         };
         void handleSearch();
-    }, [searchQuery, supabase]);
+    }, [searchQuery, specialization, supabase]);
 
     return (
         <div className={styles.root}>
@@ -60,19 +62,21 @@ const ReserveVisit: React.FC = () => {
                     </label>
                     <select
                         className={styles.select}
+                        onChange={(e) => { setSpecialization(e.target.value); }}
                         name="specialization"
                         id="specialization"
                     >
-                        <option value="neuro">Neurolog</option>
-                        <option value="orto">Ortopeda</option>
-                        <option value="kardio">Kardiolog</option>
-                        <option value="uro">Urolog</option>
+                        <option value="" defaultChecked>Dowolna</option>
+                        <option value="neurolog">Neurolog</option>
+                        <option value="ortopeda">Ortopeda</option>
+                        <option value="cardiolog">Kardiolog</option>
+                        <option value="urolog">Urolog</option>
                     </select>
                 </div>
             </div>
             <h3>Wyniki wyszukiwania</h3>
-            {!loading && doctors.length === 0 && searchQuery && (
-                <p>Brak wynikow dla zapytania &quot;{searchQuery}&quot;.</p>
+            {!loading && doctors.length === 0 && (
+                <p>Brak wyników.</p>
             )}
             <ul>
                 {doctors.map(doctor => (
