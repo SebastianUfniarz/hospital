@@ -4,7 +4,7 @@ import { format, parse, startOfWeek, getDay } from "date-fns";
 import { pl } from "date-fns/locale";
 
 import styles from "./DoctorSchedule.module.css";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import "./react-big-calendar.css";
 
 const messages = {
     next: "Następny",
