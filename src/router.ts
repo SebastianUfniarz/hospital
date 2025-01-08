@@ -15,6 +15,7 @@ import Logout from "./routes/Logout/Logout.tsx";
 import TreatmentHistory from "./routes/TreatmentHistory/TreatmentHistory.tsx";
 import MyPatients from "./routes/MyPatients/MyPatients.tsx";
 import RegisterDoctor from "./routes/RegisterDoctor/RegisterDoctor.tsx";
+import ReserveVisitDoctor from "./routes/ReserveVisitDoctor/ReserveVisitDoctor.tsx";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,15 @@ const router = createBrowserRouter([
                 path: "/patient/reserve_visit",
                 Component: ReserveVisit,
                 ErrorBoundary: ErrorPage,
+            },
+            {
+                path: "/patient/reserve_visit/:doctorId",
+                Component: ReserveVisitDoctor,
+                ErrorBoundary: ErrorPage,
+                // eslint-disable-next-line @typescript-eslint/require-await
+                loader: async ({ params }): Promise<string> => {
+                    return params.doctorId ?? "";
+                },
             },
             {
                 path: "/patient/treatment_history",

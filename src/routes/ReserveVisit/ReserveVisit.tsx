@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import clsx from "clsx/lite";
+
 import styles from "./ReserveVisit.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
 import { IDoctor } from "../../types/IDoctor";
@@ -19,12 +20,12 @@ const ReserveVisit: React.FC = () => {
                 const { data, error } = specialization
                     ? await supabase
                         .from("doctor")
-                        .select("id, first_name, last_name, specialization")
+                        .select("id, first_name, last_name, specialization, work_time")
                         .eq("specialization", specialization)
                         .ilike("last_name", `%${searchQuery}%`)
                     : await supabase
                         .from("doctor")
-                        .select("id, first_name, last_name, specialization")
+                        .select("id, first_name, last_name, specialization, work_time")
                         .ilike("last_name", `%${searchQuery}%`);
 
                 if (error) {

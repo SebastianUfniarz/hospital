@@ -54,9 +54,9 @@ const RegisterPatient: React.FC = () => {
         }
 
         const res2 = await supabase.from("patient").insert({
-            "first_name": firstName,
-            "last_name": lastName,
-            "birth_date": birthDate,
+            first_name: firstName,
+            last_name: lastName,
+            birth_date: birthDate,
             telephone,
             email,
             pesel,
