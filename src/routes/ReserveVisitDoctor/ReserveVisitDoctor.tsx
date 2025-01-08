@@ -18,7 +18,7 @@ const ReserveVisitDoctor: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [doctor, setDoctor] = useState<IDoctor>();
     const doctorId = useLoaderData() as string;
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
     useEffect(() => {
         const handleSearch = async () => {
@@ -54,7 +54,8 @@ const ReserveVisitDoctor: React.FC = () => {
         return doctor.work_time.some(w => date.getDay() === w.day);
     };
 
-    const validateDateTime = (date: Date) => {
+    const validateDateTime = (date: Date | null) => {
+        if (!(date instanceof Date)) return false;
         const hour = date.getHours();
         const minute = date.getMinutes();
 
@@ -102,12 +103,13 @@ const ReserveVisitDoctor: React.FC = () => {
                     showTimeSelect
                     dateFormat="Pp"
                     timeCaption="Godzina"
+                    placeholderText="Wybierz termin"
                     popperPlacement="bottom-end"
                     selected={selectedDate}
                     minDate={new Date()}
                     filterDate={validateDate}
                     filterTime={validateDateTime}
-                    onChange={(date) => { setSelectedDate(date ?? new Date()); }}
+                    onChange={(date) => { setSelectedDate(date); }}
                 />
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
