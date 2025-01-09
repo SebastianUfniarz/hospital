@@ -1,8 +1,9 @@
-import { Suspense } from "react";
-import { Outlet } from "react-router-dom";
+import { Suspense, useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import styles from "./PatientApp.module.css";
 import AppHeader from "./components/AppHeader/AppHeader";
+import { useSupabase } from "./contexts/SupabaseProvider";
 
 const links = [
     {
@@ -28,6 +29,17 @@ const links = [
 ];
 
 const DoctorApp: React.FC = () => {
+    const supabase = useSupabase();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        (async () => {
+            const { data } = await supabase.auth.getSession();
+            if (!data.session) navigate("/");
+        })();
+    }, [navigate, supabase.auth]);
+
     return (
         <>
             <AppHeader links={links} />
