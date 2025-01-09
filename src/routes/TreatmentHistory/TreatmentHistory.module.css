@@ -1,6 +1,6 @@
 .root {
     padding: 20px;
-    color: #fff;
+    /* color: #fff; */
 }
 
 .historyTable {
@@ -9,20 +9,20 @@
     margin-top: 20px;
 }
 
-    .historyTable th,
-    .historyTable td {
-        padding: 12px;
-        border: 1px solid #555;
-    }
+.historyTable th,
+.historyTable td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+}
 
-    .historyTable th {
-        background-color: #333;
-    }
+/* .historyTable th {
+    background-color: #333;
+}
 
-    .historyTable tr:nth-child(even) {
-        background-color: #444;
-    }
+.historyTable tr:nth-child(even) {
+    background-color: #444;
+}
 
-    .historyTable tr:hover {
-        background-color: #555;
-    }
+.historyTable tr:hover {
+    background-color: #555;
+} */
