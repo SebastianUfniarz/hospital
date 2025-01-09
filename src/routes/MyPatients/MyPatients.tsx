@@ -34,7 +34,7 @@ const MyPatients: React.FC = () => {
 
     return (
         <div className={styles.root}>
-            <h2>Wybierz pacjenta</h2>
+            <h3>Wybierz pacjenta</h3>
             {loading
                 ? (
                         <p>Ładowanie...</p>

@@ -70,7 +70,7 @@ const MyData: React.FC = () => {
 
     return (
         <div className={styles.root}>
-            <h1>Moje dane</h1>
+            <h3>Moje dane</h3>
             {patientData
                 ? (
                         <div className={styles.dataContainer}>
