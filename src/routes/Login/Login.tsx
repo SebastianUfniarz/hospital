@@ -11,7 +11,7 @@ interface FormTarget extends EventTarget {
 }
 
 const Login: React.FC = () => {
-    const { auth } = useSupabase();
+    const supabase = useSupabase();
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>();
 
@@ -20,7 +20,7 @@ const Login: React.FC = () => {
         const email = (e.target as FormTarget).email.value;
         const password = (e.target as FormTarget).password.value;
 
-        const { data, error } = await auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
         if (error) {
             console.error(error);
@@ -31,9 +31,14 @@ const Login: React.FC = () => {
                 setErrorMessage(error.message);
             return;
         }
-
         console.log(data);
-        navigate("/patient");
+
+        const patient = await supabase.from("patient")
+            .select("email")
+            .eq("email", email)
+            .single();
+
+        navigate(patient.status !== 200 ? "/doctor" : "/patient");
     };
 
     return (
