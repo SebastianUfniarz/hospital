@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { pl } from "date-fns/locale";
+import { IoArrowBack } from "react-icons/io5";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./ReserveVisitDoctor.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
 import { IDoctor } from "../../types/IDoctor";
 import IconButton from "../../components/IconButton/IconButton";
-import { IoArrowBack } from "react-icons/io5";
+import { IPatient } from "../../types/IPatient";
+import { IVisit } from "../../types/IVisit";
 
 registerLocale("pl", pl);
 
@@ -17,6 +19,7 @@ const ReserveVisitDoctor: React.FC = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [doctor, setDoctor] = useState<IDoctor>();
+    const [visits, setVisits] = useState<IVisit[]>();
     const doctorId = useLoaderData() as string;
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -24,15 +27,27 @@ const ReserveVisitDoctor: React.FC = () => {
         const handleSearch = async () => {
             setLoading(true);
             try {
-                const { data, error } = await supabase
+                const doctorRes = await supabase
                     .from("doctor")
                     .select("id, first_name, last_name, specialization, work_time")
-                    .eq("id", doctorId);
+                    .eq("id", doctorId)
+                    .single();
 
-                if (error) {
-                    console.error("Blad podczas wyszukiwania:", error.message);
+                if (doctorRes.error) {
+                    console.error("Blad podczas wyszukiwania:", doctorRes.error.message);
                 } else {
-                    setDoctor(data[0]);
+                    setDoctor(doctorRes.data);
+                }
+
+                const visitsRes = await supabase
+                    .from("visit")
+                    .select("patient_id, doctor_id, date, confirmed")
+                    .eq("doctor_id", doctorId);
+
+                if (visitsRes.error) {
+                    console.error("Blad podczas wyszukiwania:", visitsRes.error.message);
+                } else {
+                    setVisits(visitsRes.data);
                 }
             } catch (err) {
                 console.error("Nieoczekiwany blad:", err);
@@ -49,6 +64,9 @@ const ReserveVisitDoctor: React.FC = () => {
     if (!doctor) {
         return <div className={styles.root}>Błąd! Nie ma takiego lekarza!</div>;
     }
+    if (!visits) {
+        return <div className={styles.root}>Błąd! Brak wizyt!</div>;
+    }
 
     const validateDate = (date: Date) => {
         return doctor.work_time.some(w => date.getDay() === w.day);
@@ -59,13 +77,16 @@ const ReserveVisitDoctor: React.FC = () => {
         const hour = date.getHours();
         const minute = date.getMinutes();
 
-        return doctor.work_time.some(w =>
+        const isInWorkingHours = doctor.work_time.some(w =>
             date.getDay() === w.day && (
                 (hour > w.starting_hour && hour < w.ending_hour)
                 || (hour === w.starting_hour && minute >= w.starting_minute)
                 || (hour === w.ending_hour && minute < w.ending_minute)
             ),
         );
+        if (!isInWorkingHours) return false;
+
+        return !visits.some(visit => date.valueOf() === new Date(visit.date).valueOf());
     };
 
     const reserveVisit = async () => {
@@ -73,9 +94,18 @@ const ReserveVisitDoctor: React.FC = () => {
             return;
         }
 
+        const session = await supabase.auth.getSession();
+        const patientRes = await supabase.from("patient")
+            .select("id, email")
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            .eq("email", session.data.session!.user.email)
+            .single();
+
+        const patient = patientRes.data as Partial<IPatient>;
+
         const res = await supabase.from("visit").insert({
             doctor_id: doctorId,
-            patient_id: 4,
+            patient_id: patient.id,
             date: selectedDate,
         });
 

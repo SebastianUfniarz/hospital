@@ -77,32 +77,30 @@ const ReserveVisit: React.FC = () => {
                 </div>
             </div>
             <h3>Wyniki wyszukiwania</h3>
-            {!loading && doctors.length === 0 && (
-                <p>Brak wyników.</p>
-            )}
-            {!loading && (
-                <div className={styles.list}>
-                    <div className={clsx(styles.listHeadingRow, styles.listRow)}>
-                        <div className={styles.listCol}>Imię</div>
-                        <div className={styles.listCol}>Nazwisko</div>
-                        <div className={styles.listCol}>Specjalizacja</div>
-                    </div>
-                    {doctors.map(doctor => (
-                        <Link
-                            key={doctor.id}
-                            to={doctor.id.toString()}
-                        >
-                            <div className={styles.listRow} key={doctor.id}>
-
-                                <div className={styles.listCol}>{doctor.first_name}</div>
-                                <div className={styles.listCol}>{doctor.last_name}</div>
-                                <div className={styles.listCol}>{doctor.specialization}</div>
+            {(!loading && doctors.length === 0)
+                ? (<p>Brak wyników.</p>)
+                : (
+                        <div className={styles.list}>
+                            <div className={clsx(styles.listHeadingRow, styles.listRow)}>
+                                <div className={styles.listCol}>Imię</div>
+                                <div className={styles.listCol}>Nazwisko</div>
+                                <div className={styles.listCol}>Specjalizacja</div>
                             </div>
-                        </Link>
-                    ))}
-                </div>
+                            {doctors.map(doctor => (
+                                <Link
+                                    key={doctor.id}
+                                    to={doctor.id.toString()}
+                                >
+                                    <div className={styles.listRow} key={doctor.id}>
 
-            )}
+                                        <div className={styles.listCol}>{doctor.first_name}</div>
+                                        <div className={styles.listCol}>{doctor.last_name}</div>
+                                        <div className={styles.listCol}>{doctor.specialization}</div>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
         </div>
     );
 };
