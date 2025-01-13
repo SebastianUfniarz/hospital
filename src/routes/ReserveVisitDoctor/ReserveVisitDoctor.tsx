@@ -41,7 +41,7 @@ const ReserveVisitDoctor: React.FC = () => {
 
                 const visitsRes = await supabase
                     .from("visit")
-                    .select("patient_id, doctor_id, date, confirmed")
+                    .select("id, patient_id, doctor_id, date, confirmed")
                     .eq("doctor_id", doctorId);
 
                 if (visitsRes.error) {
@@ -142,8 +142,7 @@ const ReserveVisitDoctor: React.FC = () => {
                     onChange={(date) => { setSelectedDate(date); }}
                 />
             </div>
-            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-            <button onClick={reserveVisit}>Umów wizytę</button>
+            <button onClick={() => { void reserveVisit(); }}>Umów wizytę</button>
         </div>
     );
 };

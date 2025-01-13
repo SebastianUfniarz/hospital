@@ -33,8 +33,7 @@ const PatientApp: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        (async () => {
+        void (async () => {
             const { data } = await supabase.auth.getSession();
             if (!data.session) navigate("/");
 

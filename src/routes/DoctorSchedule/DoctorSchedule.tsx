@@ -29,6 +29,10 @@ interface IEventItem {
     end: Date;
 }
 
+interface IVisitData extends IVisit {
+    patient: Pick<IPatient, "first_name" | "last_name">;
+}
+
 const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
 
 const DoctorSchedule: React.FC = () => {
@@ -48,23 +52,24 @@ const DoctorSchedule: React.FC = () => {
                     .eq("email", session.data.session!.user.email)
                     .single();
 
-                const doctor = doctorRes.data as Partial<IDoctor>;
+                const doctor = doctorRes.data as Pick<IDoctor, "id">;
 
                 const visitsRes = await supabase
                     .from("visit")
-                    .select("patient_id, doctor_id, date, confirmed, patient(first_name, last_name)")
+                    .select(`
+                        id, patient_id, doctor_id, date, confirmed,
+                        patient(first_name, last_name)`)
                     .eq("doctor_id", doctor.id);
 
                 if (visitsRes.error) {
                     console.error("Blad podczas wyszukiwania:", visitsRes.error.message);
                 } else {
-                    const visits = visitsRes.data as (IVisit & { patient: Partial<IPatient> })[];
+                    const visits = visitsRes.data as unknown as IVisitData[];
 
                     setEvents(visits.map((visit) => {
                         const startDate = new Date(visit.date);
                         const endDate = addMinutes(startDate, 30);
                         return {
-                            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                             title: `${visit.patient.first_name} ${visit.patient.last_name}`,
                             start: startDate,
                             end: endDate,

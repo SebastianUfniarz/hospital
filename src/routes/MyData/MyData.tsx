@@ -18,6 +18,7 @@ const MyData: React.FC = () => {
     useEffect(() => {
         const fetchPatientData = async () => {
             try {
+                setLoading(true);
                 const { data: session } = await supabase.auth.getSession();
                 console.log("Session data:", session);
 
@@ -60,10 +61,6 @@ const MyData: React.FC = () => {
         void fetchPatientData();
     }, [supabase]);
 
-    if (loading) {
-        return <div className={styles.root}>Ładowanie danych...</div>;
-    }
-
     if (error) {
         return <div className={styles.root}>{error}</div>;
     }
@@ -71,24 +68,22 @@ const MyData: React.FC = () => {
     return (
         <div className={styles.root}>
             <h3>Moje dane</h3>
-            {patientData
-                ? (
-                        <div className={styles.dataContainer}>
-                            <p><strong>Imie:</strong> {patientData.first_name}</p>
-                            <p><strong>Nazwisko:</strong> {patientData.last_name}</p>
-                            <p><strong>PESEL:</strong> {patientData.pesel}</p>
-                            <p><strong>Data urodzenia:</strong> {patientData.birth_date}</p>
-                            <p><strong>Numer telefonu:</strong> {patientData.telephone}</p>
-                            <p><strong>Email:</strong> {patientData.email}</p>
+            {loading && <div>Ładowanie danych...</div>}
+            {!loading && !patientData && <div>Nie znaleziono danych pacjenta.</div>}
+            {!loading && patientData && (
+                <div className={styles.dataContainer}>
+                    <p><strong>Imię:</strong> {patientData.first_name}</p>
+                    <p><strong>Nazwisko:</strong> {patientData.last_name}</p>
+                    <p><strong>PESEL:</strong> {patientData.pesel}</p>
+                    <p><strong>Data urodzenia:</strong> {patientData.birth_date}</p>
+                    <p><strong>Numer telefonu:</strong> {patientData.telephone}</p>
+                    <p><strong>Email:</strong> {patientData.email}</p>
 
-                            <button className={styles.btn} onClick={handleChangePasswordClick}>
-                                Zmien haslo
-                            </button>
-                        </div>
-                    )
-                : (
-                        <p>Nie znaleziono danych pacjenta.</p>
-                    )}
+                    <button className={styles.btn} onClick={handleChangePasswordClick}>
+                        Zmień haslo
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

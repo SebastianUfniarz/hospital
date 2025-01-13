@@ -125,8 +125,10 @@ const RegisterDoctor: React.FC = () => {
                         />
                     </form>
 
-                    {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-                    <form onSubmit={handleSubmit} style={{ display: !isNext ? "none" : "block" }}>
+                    <form
+                        onSubmit={(e) => { void handleSubmit(e); }}
+                        style={{ display: !isNext ? "none" : "block" }}
+                    >
                         <input
                             required
                             type="text"

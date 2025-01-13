@@ -4,4 +4,6 @@
 
 .btn {}
 
-.dataContainer {}
+.dataContainer {
+    font-size: 0.9em;
+}

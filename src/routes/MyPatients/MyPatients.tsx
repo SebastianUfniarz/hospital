@@ -22,8 +22,8 @@ const MyPatients: React.FC = () => {
                 const { data, error } = await supabase.from("patient").select("*");
                 if (error) throw error;
                 setPatients(data);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
+                console.error(error);
                 setErrorMessage("Nie udało się pobrać pacjentów");
             } finally {
                 setLoading(false);

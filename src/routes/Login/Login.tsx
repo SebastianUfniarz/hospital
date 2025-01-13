@@ -44,8 +44,7 @@ const Login: React.FC = () => {
     return (
         <>
             <div className={styles.root}>
-                {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-                <form className={styles.container} onSubmit={handleSubmit}>
+                <form className={styles.container} onSubmit={(e) => { void handleSubmit(e); }}>
                     <div className={styles.heading}>Logowanie</div>
                     <input
                         required

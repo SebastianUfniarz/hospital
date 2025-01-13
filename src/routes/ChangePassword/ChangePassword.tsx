@@ -42,8 +42,7 @@ const ChangePassword: React.FC = () => {
             <div className={styles.container}>
 
                 <div className={styles.heading}>Zmiana hasla</div>
-                {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={(e) => { void handleSubmit(e); }}>
                     <div className={styles.formGroup}>
                         {/* <label htmlFor="newPassword">Nowe haslo:</label> */}
                         <input
