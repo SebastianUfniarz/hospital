@@ -35,11 +35,14 @@ const DoctorApp: React.FC = () => {
     useEffect(() => {
         void (async () => {
             const { data } = await supabase.auth.getSession();
-            if (!data.session) navigate("/");
+            if (!data.session) {
+                navigate("/");
+                return;
+            }
 
             const doctor = await supabase.from("doctor")
                 .select("email")
-                .eq("email", data.session?.user.email)
+                .eq("email", data.session.user.email)
                 .single();
 
             if (doctor.status !== 200) navigate("/patient");
