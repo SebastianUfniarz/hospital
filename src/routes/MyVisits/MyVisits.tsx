@@ -37,6 +37,7 @@ const MyVisits: React.FC = () => {
     useEffect(() => {
         const fetchVisits = async () => {
             try {
+                setLoading(true);
                 const { data: session } = await supabase.auth.getSession();
 
                 if (!session.session) {
@@ -77,10 +78,6 @@ const MyVisits: React.FC = () => {
         void fetchVisits();
     }, [supabase, reload]);
 
-    if (loading) {
-        return <div className={styles.root}>Ładowanie danych...</div>;
-    }
-
     if (error) {
         return <div className={styles.root}>{error}</div>;
     }
@@ -88,29 +85,33 @@ const MyVisits: React.FC = () => {
     return (
         <div className={styles.root}>
             <h3>Moje wizyty</h3>
-            <div className={styles.list}>
-                <div className={clsx(styles.listHeadingRow, styles.listRow)}>
-                    <div className={styles.listCol}>Termin</div>
-                    <div className={styles.listCol}>Imię</div>
-                    <div className={styles.listCol}>Nazwisko</div>
-                    <div className={styles.listCol}>Specjalizacja</div>
-                    <div className={styles.listCol}>Opcje</div>
-                </div>
-                {visits.map(({ id, date: dateStr, doctor }) => {
-                    const date = new Date(dateStr);
-                    return (
-                        <div className={styles.listRow} key={id}>
-                            <div className={styles.listCol}>{date.toLocaleString()}</div>
-                            <div className={styles.listCol}>{doctor.first_name}</div>
-                            <div className={styles.listCol}>{doctor.last_name}</div>
-                            <div className={styles.listCol}>{doctor.specialization}</div>
-                            <div className={styles.listCol}>
-                                <button onClick={() => { void cancelVisit(id); }}>Anuluj wizytę</button>
+            {loading && <div>Ładowanie...</div>}
+            {(!loading && visits.length === 0) && <p>Brak umówionych wizyt.</p>}
+            {(!loading && visits.length > 0) && (
+                <div className={styles.list}>
+                    <div className={clsx(styles.listHeadingRow, styles.listRow)}>
+                        <div className={styles.listCol}>Termin</div>
+                        <div className={styles.listCol}>Imię</div>
+                        <div className={styles.listCol}>Nazwisko</div>
+                        <div className={styles.listCol}>Specjalizacja</div>
+                        <div className={styles.listCol}>Opcje</div>
+                    </div>
+                    {visits.map(({ id, date: dateStr, doctor }) => {
+                        const date = new Date(dateStr);
+                        return (
+                            <div className={styles.listRow} key={id}>
+                                <div className={styles.listCol}>{date.toLocaleString()}</div>
+                                <div className={styles.listCol}>{doctor.first_name}</div>
+                                <div className={styles.listCol}>{doctor.last_name}</div>
+                                <div className={styles.listCol}>{doctor.specialization}</div>
+                                <div className={styles.listCol}>
+                                    <button onClick={() => { void cancelVisit(id); }}>Anuluj wizytę</button>
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
-            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 };
