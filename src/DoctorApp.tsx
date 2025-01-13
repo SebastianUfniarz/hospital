@@ -14,10 +14,10 @@ const links = [
         pathname: "/doctor/my_patients",
         name: "Moi pacjenci",
     },
-    {
-        pathname: "/doctor/treatment_history",
-        name: "Historia leczenia",
-    },
+    // {
+    //     pathname: "/doctor/treatment_history",
+    //     name: "Historia leczenia",
+    // },
     {
         pathname: "/doctor/my_data",
         name: "Moje dane",
