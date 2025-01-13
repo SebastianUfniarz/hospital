@@ -16,6 +16,7 @@ import TreatmentHistory from "./routes/TreatmentHistory/TreatmentHistory.tsx";
 import MyPatients from "./routes/MyPatients/MyPatients.tsx";
 import RegisterDoctor from "./routes/RegisterDoctor/RegisterDoctor.tsx";
 import ReserveVisitDoctor from "./routes/ReserveVisitDoctor/ReserveVisitDoctor.tsx";
+import MyVisits from "./routes/MyVisits/MyVisits.tsx";
 
 const router = createBrowserRouter([
     {
@@ -49,6 +50,11 @@ const router = createBrowserRouter([
             {
                 path: "/patient/my_data",
                 Component: MyData,
+                ErrorBoundary: ErrorPage,
+            },
+            {
+                path: "/patient/my_visits",
+                Component: MyVisits,
                 ErrorBoundary: ErrorPage,
             },
         ],
