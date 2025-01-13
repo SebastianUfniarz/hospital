@@ -17,12 +17,27 @@ const MyVisits: React.FC = () => {
     const [visits, setVisits] = useState<IData[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
+    const [reload, setReload] = useState(false);
+
+    const cancelVisit = async (id: number) => {
+        const res = await supabase
+            .from("visit")
+            .delete()
+            .eq("id", id);
+
+        if (res.error) {
+            console.error("Database error:", res.error);
+            setError("Nie udało się anulować wizyty!");
+        } else {
+            console.log(res);
+            setReload(true);
+        }
+    };
 
     useEffect(() => {
         const fetchVisits = async () => {
             try {
                 const { data: session } = await supabase.auth.getSession();
-                console.log("Session data:", session);
 
                 if (!session.session) {
                     setError("Nie znaleziono aktywnej sesji użytkownika.");
@@ -34,10 +49,12 @@ const MyVisits: React.FC = () => {
 
                 const visitsRes = await supabase
                     .from("visit")
-                    .select("patient_id, doctor_id, date, confirmed, patient(email), doctor(first_name, last_name, specialization)")
+                    .select(`
+                        id, patient_id, doctor_id, date, confirmed,
+                        patient(email),
+                        doctor(first_name, last_name, specialization)`)
                     .eq("patient.email", userEmail);
 
-                console.log(visitsRes);
                 const data = visitsRes.data as IData[] | null;
 
                 if (visitsRes.error) {
@@ -47,7 +64,6 @@ const MyVisits: React.FC = () => {
                     console.error("No data found for email:", userEmail);
                     setError("Nie znaleziono danych pacjenta.");
                 } else {
-                    console.log("Patient data:", data);
                     setVisits(data);
                 }
             } catch (error) {
@@ -59,7 +75,7 @@ const MyVisits: React.FC = () => {
         };
 
         void fetchVisits();
-    }, [supabase]);
+    }, [supabase, reload]);
 
     if (loading) {
         return <div className={styles.root}>Ładowanie danych...</div>;
@@ -80,16 +96,16 @@ const MyVisits: React.FC = () => {
                     <div className={styles.listCol}>Specjalizacja</div>
                     <div className={styles.listCol}>Opcje</div>
                 </div>
-                {visits.map(({ date: dateStr, doctor }) => {
+                {visits.map(({ id, date: dateStr, doctor }) => {
                     const date = new Date(dateStr);
                     return (
-                        <div className={styles.listRow} key={date.valueOf()}>
+                        <div className={styles.listRow} key={id}>
                             <div className={styles.listCol}>{date.toLocaleString()}</div>
                             <div className={styles.listCol}>{doctor.first_name}</div>
                             <div className={styles.listCol}>{doctor.last_name}</div>
                             <div className={styles.listCol}>{doctor.specialization}</div>
                             <div className={styles.listCol}>
-                                <button>Anuluj wizytę</button>
+                                <button onClick={() => { void cancelVisit(id); }}>Anuluj wizytę</button>
                             </div>
                         </div>
                     );
