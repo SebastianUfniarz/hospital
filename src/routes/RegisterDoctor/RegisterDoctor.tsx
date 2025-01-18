@@ -29,7 +29,7 @@ const RegisterDoctor: React.FC = () => {
     const supabase = useSupabase();
     const navigate = useNavigate();
     const [isNext, setNext] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string>();
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [authCredentials, setAuthCredentials] = useState<AuthCredentials>({ email: "", password: "" });
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -78,120 +78,121 @@ const RegisterDoctor: React.FC = () => {
         const password = target.password.value;
         const confirmPassword = target.confirmPassword.value;
 
-        if (password !== confirmPassword) throw Error("Hasła się nie zgadzają!");
+        if (password !== confirmPassword) {
+            setErrorMessage("Hasła się nie zgadzają!");
+            return;
+        }
 
         setAuthCredentials({ email, password });
         setNext(true);
     };
 
     return (
-        <>
-            <div className={styles.root}>
-                <div className={styles.container}>
-                    {isNext && (
-                        <IconButton title="Cofnij" onClick={() => { setNext(false); }}>
-                            <IoArrowBack size={24} />
-                        </IconButton>
-                    )}
-                    <div className={styles.heading}>Rejestracja lekarza</div>
-                    <form onSubmit={handleClickNext} style={{ display: isNext ? "none" : "block" }}>
-                        <input
-                            required
-                            type="text"
-                            name="email"
-                            placeholder="Email"
-                            className={styles.textInput}
-                        />
-                        <input
-                            required
-                            minLength={6}
-                            type="password"
-                            name="password"
-                            placeholder="Hasło"
-                            className={styles.textInput}
-                        />
-                        <input
-                            required
-                            minLength={6}
-                            type="password"
-                            name="confirmPassword"
-                            placeholder="Powtórz hasło"
-                            className={styles.textInput}
-                        />
-                        <input
-                            type="submit"
-                            value="Dalej"
-                            className={styles.btn}
-                        />
-                    </form>
+        <div className={styles.root}>
+            <div className={styles.container}>
+                {isNext && (
+                    <IconButton title="Cofnij" onClick={() => { setNext(false); }}>
+                        <IoArrowBack size={24} />
+                    </IconButton>
+                )}
+                <div className={styles.heading}>Rejestracja lekarza</div>
+                <form onSubmit={handleClickNext} style={{ display: isNext ? "none" : "block" }}>
+                    <input
+                        required
+                        type="text"
+                        name="email"
+                        placeholder="Email"
+                        className={styles.textInput}
+                    />
+                    <input
+                        required
+                        minLength={6}
+                        type="password"
+                        name="password"
+                        placeholder="Hasło"
+                        className={styles.textInput}
+                    />
+                    <input
+                        required
+                        minLength={6}
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Powtórz hasło"
+                        className={styles.textInput}
+                    />
+                    <input
+                        type="submit"
+                        value="Dalej"
+                        className={styles.btn}
+                    />
+                </form>
 
-                    <form
-                        onSubmit={(e) => { void handleSubmit(e); }}
-                        style={{ display: !isNext ? "none" : "block" }}
-                    >
+                <form
+                    onSubmit={(e) => { void handleSubmit(e); }}
+                    style={{ display: !isNext ? "none" : "block" }}
+                >
+                    <input
+                        required
+                        type="text"
+                        name="firstName"
+                        placeholder="Imię"
+                        className={styles.textInput}
+                    />
+                    <input
+                        required
+                        type="text"
+                        name="lastName"
+                        placeholder="Nazwisko"
+                        className={styles.textInput}
+                    />
+                    <input
+                        required
+                        type="number"
+                        name="pesel"
+                        placeholder="PESEL"
+                        className={styles.textInput}
+                    />
+                    <input
+                        required
+                        type="text"
+                        name="birthDate"
+                        placeholder="Data urodzenia (RRRR-MM-DD)"
+                        className={styles.textInput}
+                    />
+                    <input
+                        required
+                        minLength={9}
+                        type="number"
+                        name="telephone"
+                        placeholder="Numer telefonu"
+                        className={styles.textInput}
+                    />
+                    <div className={styles.checkboxContainer}>
                         <input
                             required
-                            type="text"
-                            name="firstName"
-                            placeholder="Imię"
-                            className={styles.textInput}
+                            type="checkbox"
+                            className={styles.checkbox}
                         />
-                        <input
-                            required
-                            type="text"
-                            name="lastName"
-                            placeholder="Nazwisko"
-                            className={styles.textInput}
-                        />
-                        <input
-                            required
-                            type="number"
-                            name="pesel"
-                            placeholder="PESEL"
-                            className={styles.textInput}
-                        />
-                        <input
-                            required
-                            type="text"
-                            name="birthDate"
-                            placeholder="Data urodzenia (RRRR-MM-DD)"
-                            className={styles.textInput}
-                        />
-                        <input
-                            required
-                            minLength={9}
-                            type="number"
-                            name="telephone"
-                            placeholder="Numer telefonu"
-                            className={styles.textInput}
-                        />
-                        <div className={styles.checkboxContainer}>
-                            <input
-                                required
-                                type="checkbox"
-                                className={styles.checkbox}
-                            />
-                            Akceptuję regulamin serwisu
-                        </div>
-                        {errorMessage && (
-                            <div className={styles.errorMessage}>
-                                <IoWarning size={22} />
-                                {errorMessage}
-                            </div>
-                        )}
-                        <input
-                            type="submit"
-                            value="Załóż konto"
-                            className={styles.btn}
-                        />
-                    </form>
-
-                    <div className={styles.suggestion}>
-                        Masz już konto? <Link className={styles.link} to="/login">Zaloguj się!</Link>
+                        Akceptuję regulamin serwisu
                     </div>
+                    {errorMessage && (
+                        <div className={styles.errorMessage}>
+                            <IoWarning size={22} />
+                            {errorMessage}
+                        </div>
+                    )}
+                    <input
+                        type="submit"
+                        value="Załóż konto"
+                        className={styles.btn}
+                    />
+                </form>
+
+                <div className={styles.suggestion}>
+                    Masz już konto? <Link className={styles.link} to="/login">Zaloguj się!</Link>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
