@@ -25,7 +25,12 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     background-color: #fff;
     width: 100%;
+    max-width: none;
     box-sizing: border-box;
+}
+
+.empty {
+    width: 100%;
 }
 
 .patientSelect,
@@ -41,7 +46,7 @@
 }
 
 .submitButton {
-    padding: 12px 20px;
+    padding: 10px 15px;
     font-size: 16px;
     color: #fff;
     background-color: #007bff;
@@ -50,6 +55,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-top: 16px;
+    margin-right: 6px;
 }
 
 .submitButton:hover {
@@ -64,4 +70,11 @@
 .successMessage {
     color: green;
     font-size: 14px;
+}
+
+.historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    table-layout: fixed;
 }
