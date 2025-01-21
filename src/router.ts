@@ -8,7 +8,7 @@ import Login from "./routes/Login/Login.tsx";
 import RegisterPatient from "./routes/RegisterPatient/RegisterPatient.tsx";
 import LandingPage from "./routes/LandingPage/LandingPage.tsx";
 import ReserveVisit from "./routes/ReserveVisit/ReserveVisit.tsx";
-import MyData from "./routes/MyData/MyData.tsx";
+import MyDataPatient from "./routes/MyDataPatient/MyDataPatient.tsx";
 import ChangePassword from "./routes/ChangePassword/ChangePassword.tsx";
 import DoctorSchedule from "./routes/DoctorSchedule/DoctorSchedule.tsx";
 import Logout from "./routes/Logout/Logout.tsx";
@@ -17,6 +17,7 @@ import MyPatients from "./routes/MyPatients/MyPatients.tsx";
 import RegisterDoctor from "./routes/RegisterDoctor/RegisterDoctor.tsx";
 import ReserveVisitDoctor from "./routes/ReserveVisitDoctor/ReserveVisitDoctor.tsx";
 import MyVisits from "./routes/MyVisits/MyVisits.tsx";
+import MyDataDoctor from "./routes/MyDataDoctor/MyDataDoctor.tsx";
 
 const router = createBrowserRouter([
     {
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/patient/my_data",
-                Component: MyData,
+                Component: MyDataPatient,
                 ErrorBoundary: ErrorPage,
             },
             {
@@ -76,6 +77,11 @@ const router = createBrowserRouter([
             {
                 path: "/doctor/schedule",
                 Component: DoctorSchedule,
+                ErrorBoundary: ErrorPage,
+            },
+            {
+                path: "/doctor/my_data",
+                Component: MyDataDoctor,
                 ErrorBoundary: ErrorPage,
             },
         ],

@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import styles from "./MyData.module.css";
+import styles from "./MyDataDoctor.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
 import { useNavigate } from "react-router-dom";
-import { IPatient } from "../../types/IPatient";
+import { IDoctor } from "../../types/IDoctor";
 
-const MyData: React.FC = () => {
+interface Doctor extends IDoctor {
+    birth_date: string;
+    telephone: number;
+    pesel: number;
+    email: string;
+}
+
+const MyDataDoctor: React.FC = () => {
     const supabase = useSupabase();
-    const [patientData, setPatientData] = useState<IPatient | null>(null);
+    const [doctorData, setDoctorData] = useState<Doctor | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -16,7 +23,7 @@ const MyData: React.FC = () => {
     };
 
     useEffect(() => {
-        const fetchPatientData = async () => {
+        const fetchDoctorData = async () => {
             try {
                 setLoading(true);
                 const { data: session } = await supabase.auth.getSession();
@@ -32,13 +39,13 @@ const MyData: React.FC = () => {
                 console.log("User email:", userEmail);
 
                 const res = await supabase
-                    .from("patient")
+                    .from("doctor")
                     .select("*")
                     .eq("email", userEmail)
                     .maybeSingle();
 
                 console.log(res);
-                const data = res.data as IPatient | null;
+                const data = res.data as Doctor | null;
 
                 if (res.error) {
                     console.error("Database error:", res.error);
@@ -48,7 +55,7 @@ const MyData: React.FC = () => {
                     setError("Nie znaleziono danych pacjenta.");
                 } else {
                     console.log("Patient data:", data);
-                    setPatientData(data);
+                    setDoctorData(data);
                 }
             } catch (error) {
                 console.error("Unexpected error:", error);
@@ -58,7 +65,7 @@ const MyData: React.FC = () => {
             }
         };
 
-        void fetchPatientData();
+        void fetchDoctorData();
     }, [supabase]);
 
     if (error) {
@@ -69,15 +76,20 @@ const MyData: React.FC = () => {
         <div className={styles.root}>
             <h3>Moje dane</h3>
             {loading && <div>Ładowanie danych...</div>}
-            {!loading && !patientData && <div>Nie znaleziono danych pacjenta.</div>}
-            {!loading && patientData && (
+            {!loading && !doctorData && <div>Nie znaleziono danych pacjenta.</div>}
+            {!loading && doctorData && (
                 <div className={styles.dataContainer}>
-                    <p><strong>Imię:</strong> {patientData.first_name}</p>
-                    <p><strong>Nazwisko:</strong> {patientData.last_name}</p>
-                    <p><strong>PESEL:</strong> {patientData.pesel}</p>
-                    <p><strong>Data urodzenia:</strong> {patientData.birth_date}</p>
-                    <p><strong>Numer telefonu:</strong> {patientData.telephone}</p>
-                    <p><strong>Email:</strong> {patientData.email}</p>
+                    <p><strong>Imię:</strong> {doctorData.first_name}</p>
+                    <p><strong>Nazwisko:</strong> {doctorData.last_name}</p>
+                    <p><strong>PESEL:</strong> {doctorData.pesel}</p>
+                    <p><strong>Data urodzenia:</strong> {doctorData.birth_date}</p>
+                    <p><strong>Numer telefonu:</strong> {doctorData.telephone}</p>
+                    <p><strong>Email:</strong> {doctorData.email}</p>
+                    <p><strong>Specializacja:</strong> {doctorData.specialization}</p>
+                    {/* <p><strong>Godziny pracy:</strong></p> */}
+                    {/* {doctorData.work_time.map(wt => (
+                        <div key={wt.day}>{wt.day} {wt.starting_hour}:{wt.starting_minute} - {wt.ending_hour}:{wt.ending_minute}</div>
+                    ))} */}
 
                     <button className={styles.btn} onClick={handleChangePasswordClick}>
                         Zmień haslo
@@ -88,4 +100,4 @@ const MyData: React.FC = () => {
     );
 };
 
-export default MyData;
+export default MyDataDoctor;
