@@ -20,7 +20,6 @@ const MyPatients: React.FC = () => {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [viewMode, setViewMode] = useState<"addRecord" | "viewHistory">("addRecord");
     const [patientHistory, setPatientHistory] = useState<IPatientRecord[]>([]);
-
     const [editingRecordId, setEditingRecordId] = useState<number | null>(null);
     const [editingRecord, setEditingRecord] = useState<Partial<IPatientRecord>>({});
 
@@ -134,6 +133,9 @@ const MyPatients: React.FC = () => {
     };
 
     const handleSaveEdit = async (recordId: number) => {
+        setSuccessMessage(null);
+        setErrorMessage(null);
+
         try {
             const { error: updateError } = await supabase
                 .from("patient_record")
@@ -166,7 +168,7 @@ const MyPatients: React.FC = () => {
 
     return (
         <div className={styles.root}>
-            <h3>Dodaj historię leczenia pacjenta</h3>
+            <h2>Dodaj historię leczenia pacjenta</h2>
             {loading && <p>Ładowanie...</p>}
             {!loading && !errorMessage && (
                 <>
@@ -252,8 +254,6 @@ const MyPatients: React.FC = () => {
                                     <button type="submit" className={styles.submitButton}>
                                         Dodaj wpis
                                     </button>
-                                    {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
-                                    {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
                                 </form>
                             )}
 
@@ -262,7 +262,7 @@ const MyPatients: React.FC = () => {
                                     <h3>Historia leczenia</h3>
                                     {patientHistory.length > 0 ? (
                                         patientHistory.map((record) => (
-                                            <div key={record.id} className={styles.editHistoryForm}>                                                
+                                            <div key={record.id} className={styles.editHistoryForm}>
                                                 <table className={styles.historyTable}>
                                                     <thead>
                                                         <tr>
@@ -270,7 +270,6 @@ const MyPatients: React.FC = () => {
                                                             <th>Rekomendacje</th>
                                                             <th>Zabiegi</th>
                                                             <th>Data diagnozy</th>
-                                                            <th>Akcje</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -306,14 +305,6 @@ const MyPatients: React.FC = () => {
                                                                             onChange={handleEditInputChange}
                                                                         />
                                                                     </td>
-                                                                    <td>
-                                                                        <button onClick={() => handleSaveEdit(record.id)} className={styles.submitButton}>
-                                                                            Zapisz
-                                                                        </button>
-                                                                        <button onClick={cancelEditing} className={styles.submitButton}>
-                                                                            Anuluj
-                                                                        </button>
-                                                                    </td>
                                                                 </>
                                                             ) : (
                                                                 <>
@@ -321,18 +312,35 @@ const MyPatients: React.FC = () => {
                                                                     <td>{record.recommendations}</td>
                                                                     <td>{record.performed_treatments}</td>
                                                                     <td>{record.diagnosis_date}</td>
-                                                                    <td>
-                                                                        <button className={styles.submitButton}
-                                                                            onClick={() => startEditing(record)}
-                                                                        >
-                                                                            Edytuj
-                                                                        </button>
-                                                                    </td>
                                                                 </>
                                                             )}
                                                         </tr>
                                                     </tbody>
                                                 </table>
+
+                                                {editingRecordId === record.id ? (
+                                                    <div>
+                                                        <button
+                                                            onClick={() => handleSaveEdit(record.id)}
+                                                            className={styles.submitButton}
+                                                        >
+                                                            Zapisz
+                                                        </button>
+                                                        <button
+                                                            onClick={cancelEditing}
+                                                            className={styles.submitButton}
+                                                        >
+                                                            Anuluj
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <button
+                                                        className={styles.submitButton}
+                                                        onClick={() => startEditing(record)}
+                                                    >
+                                                        Edytuj
+                                                    </button>
+                                                )}                                            
                                             </div>
                                         ))
                                     ) : (

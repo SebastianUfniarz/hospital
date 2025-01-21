@@ -52,7 +52,7 @@ const TreatmentHistory: React.FC = () => {
 
     return (
         <div className={styles.root}>
-            <h3>Historia Leczenia</h3>
+            <h2>Historia Leczenia</h2>
             {loading && <div>Ładowanie...</div>}
             {errorMessage && <div>{errorMessage}</div>}
             {!loading && !errorMessage && history.length === 0 && <div>Brak danych</div>}
