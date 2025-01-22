@@ -155,16 +155,161 @@ const MyPatients: React.FC = () => {
             setSuccessMessage("Rekord został zaktualizowany.");
             setPatientHistory(prevHistory =>
                 prevHistory.map(record =>
-                    record.id === recordId ? { ...record, ...editingRecord } : record
-                )
+                    record.id === recordId ? { ...record, ...editingRecord } : record,
+                ),
             );
 
             setEditingRecordId(null);
             setEditingRecord({});
         } catch (error) {
+            console.error(error);
             setErrorMessage("Nie udało się zaktualizować rekordu.");
         }
     };
+
+    const addRecord = (
+        (
+            <form onSubmit={e => void handleSubmit(e)} className={styles.editHistoryForm}>
+                <h3>Dodaj nowy wpis do historii leczenia</h3>
+                <label>
+                    Diagnoza:
+                    <textarea
+                        name="diagnosis"
+                        value={formData.diagnosis ?? ""}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </label>
+                <label>
+                    Rekomendacje:
+                    <textarea
+                        name="recommendations"
+                        value={formData.recommendations ?? ""}
+                        onChange={handleInputChange}
+                    />
+                </label>
+                <label>
+                    Przeprowadzone zabiegi:
+                    <textarea
+                        name="performed_treatments"
+                        value={formData.performed_treatments ?? ""}
+                        onChange={handleInputChange}
+                    />
+                </label>
+                <label>
+                    Data diagnozy:
+                    <input
+                        type="date"
+                        name="diagnosis_date"
+                        value={formData.diagnosis_date ?? ""}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </label>
+                <button type="submit" className={styles.submitButton}>
+                    Dodaj wpis
+                </button>
+            </form>
+        )
+    );
+
+    const viewHistory = (
+        <div className={styles.editHistoryForm}>
+            <h3>Historia leczenia</h3>
+            {patientHistory.length > 0
+                ? (
+                        patientHistory.map(record => (
+                            <div key={record.id} className={styles.editHistoryForm}>
+                                <table className={styles.historyTable}>
+                                    <thead>
+                                        <tr>
+                                            <th>Diagnoza</th>
+                                            <th>Rekomendacje</th>
+                                            <th>Zabiegi</th>
+                                            <th>Data diagnozy</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            {editingRecordId === record.id
+                                                ? (
+                                                        <>
+                                                            <td>
+                                                                <textarea
+                                                                    value={editingRecord.diagnosis ?? ""}
+                                                                    name="diagnosis"
+                                                                    onChange={handleEditInputChange}
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <textarea
+                                                                    value={editingRecord.recommendations ?? ""}
+                                                                    name="recommendations"
+                                                                    onChange={handleEditInputChange}
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <textarea
+                                                                    value={editingRecord.performed_treatments ?? ""}
+                                                                    name="performed_treatments"
+                                                                    onChange={handleEditInputChange}
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="date"
+                                                                    value={editingRecord.diagnosis_date ?? ""}
+                                                                    name="diagnosis_date"
+                                                                    onChange={handleEditInputChange}
+                                                                />
+                                                            </td>
+                                                        </>
+                                                    )
+                                                : (
+                                                        <>
+                                                            <td>{record.diagnosis}</td>
+                                                            <td>{record.recommendations}</td>
+                                                            <td>{record.performed_treatments}</td>
+                                                            <td>{record.diagnosis_date}</td>
+                                                        </>
+                                                    )}
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                {editingRecordId === record.id
+                                    ? (
+                                            <div>
+                                                <button
+                                                    onClick={() => void handleSaveEdit(record.id)}
+                                                    className={styles.submitButton}
+                                                >
+                                                    Zapisz
+                                                </button>
+                                                <button
+                                                    onClick={cancelEditing}
+                                                    className={styles.submitButton}
+                                                >
+                                                    Anuluj
+                                                </button>
+                                            </div>
+                                        )
+                                    : (
+                                            <button
+                                                className={styles.submitButton}
+                                                onClick={() => { startEditing(record); }}
+                                            >
+                                                Edytuj
+                                            </button>
+                                        )}
+                            </div>
+                        ))
+                    )
+                : (
+                        <p>Brak historii leczenia dla tego pacjenta.</p>
+                    )}
+        </div>
+    );
 
     return (
         <div className={styles.root}>
@@ -172,10 +317,8 @@ const MyPatients: React.FC = () => {
             {loading && <p>Ładowanie...</p>}
             {!loading && !errorMessage && (
                 <>
-                    <label htmlFor="patientSelect">Wybierz pacjenta:</label>
                     <select
-                        id="patientSelect"
-                        onChange={handlePatientChange}
+                        onChange={e => void handlePatientChange(e)}
                         defaultValue=""
                         className={styles.patientSelect}
                     >
@@ -188,166 +331,33 @@ const MyPatients: React.FC = () => {
                     </select>
 
                     {selectedPatient && (
-                        <div className={styles.empty}>
+                        <div>
                             <div className={styles.patientDetails}>
                                 <h3>Szczegóły pacjenta</h3>
-                                <p><strong>Imię:</strong> {selectedPatient.first_name}</p>
-                                <p><strong>Nazwisko:</strong> {selectedPatient.last_name}</p>
-                                <p><strong>PESEL:</strong> {selectedPatient.pesel}</p>
-                                <p><strong>Data urodzenia:</strong> {selectedPatient.birth_date}</p>
-                                <p><strong>Telefon:</strong> {selectedPatient.telephone}</p>
-                                <p><strong>Email:</strong> {selectedPatient.email}</p>
-                                <div className={styles.viewToggle}>
+                                <p><b>Imię:</b> {selectedPatient.first_name}</p>
+                                <p><b>Nazwisko:</b> {selectedPatient.last_name}</p>
+                                <p><b>PESEL:</b> {selectedPatient.pesel}</p>
+                                <p><b>Data urodzenia:</b> {selectedPatient.birth_date}</p>
+                                <p><b>Telefon:</b> {selectedPatient.telephone}</p>
+                                <p><b>Email:</b> {selectedPatient.email}</p>
+                                <div>
                                     <button
-                                        onClick={() => setViewMode("addRecord")}
-                                        className={`${styles.submitButton} ${viewMode === "addRecord" ? styles.activeButton : ""}`}
+                                        onClick={() => { setViewMode("addRecord"); }}
+                                        className={styles.submitButton}
                                     >
                                         Dodaj nowy wpis
                                     </button>
                                     <button
-                                        onClick={() => setViewMode("viewHistory")}
-                                        className={`${styles.submitButton} ${viewMode === "viewHistory" ? styles.activeButton : ""}`}
+                                        onClick={() => { setViewMode("viewHistory"); }}
+                                        className={styles.submitButton}
                                     >
                                         Pokaż historię
                                     </button>
                                 </div>
                             </div>
 
-                            {viewMode === "addRecord" && (
-                                <form onSubmit={(e) => { void handleSubmit(e); }} className={styles.editHistoryForm}>
-                                    <h3>Dodaj nowy wpis do historii leczenia</h3>
-                                    <label>
-                                        Diagnoza:
-                                        <textarea
-                                            name="diagnosis"
-                                            value={formData.diagnosis ?? ""}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                    </label>
-                                    <label>
-                                        Rekomendacje:
-                                        <textarea
-                                            name="recommendations"
-                                            value={formData.recommendations ?? ""}
-                                            onChange={handleInputChange}
-                                        />
-                                    </label>
-                                    <label>
-                                        Przeprowadzone zabiegi:
-                                        <textarea
-                                            name="performed_treatments"
-                                            value={formData.performed_treatments ?? ""}
-                                            onChange={handleInputChange}
-                                        />
-                                    </label>
-                                    <label>
-                                        Data diagnozy:
-                                        <input
-                                            type="date"
-                                            name="diagnosis_date"
-                                            value={formData.diagnosis_date ?? ""}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                    </label>
-                                    <button type="submit" className={styles.submitButton}>
-                                        Dodaj wpis
-                                    </button>
-                                </form>
-                            )}
-
-                            {viewMode === "viewHistory" && (
-                                <div className={styles.editHistoryForm}>
-                                    <h3>Historia leczenia</h3>
-                                    {patientHistory.length > 0 ? (
-                                        patientHistory.map((record) => (
-                                            <div key={record.id} className={styles.editHistoryForm}>
-                                                <table className={styles.historyTable}>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Diagnoza</th>
-                                                            <th>Rekomendacje</th>
-                                                            <th>Zabiegi</th>
-                                                            <th>Data diagnozy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            {editingRecordId === record.id ? (
-                                                                <>
-                                                                    <td>
-                                                                        <textarea
-                                                                            value={editingRecord.diagnosis || ""}
-                                                                            name="diagnosis"
-                                                                            onChange={handleEditInputChange}
-                                                                        />
-                                                                    </td>
-                                                                    <td>
-                                                                        <textarea
-                                                                            value={editingRecord.recommendations || ""}
-                                                                            name="recommendations"
-                                                                            onChange={handleEditInputChange}
-                                                                        />
-                                                                    </td>
-                                                                    <td>
-                                                                        <textarea
-                                                                            value={editingRecord.performed_treatments || ""}
-                                                                            name="performed_treatments"
-                                                                            onChange={handleEditInputChange}
-                                                                        />
-                                                                    </td>
-                                                                    <td>
-                                                                        <input
-                                                                            type="date"
-                                                                            value={editingRecord.diagnosis_date || ""}
-                                                                            name="diagnosis_date"
-                                                                            onChange={handleEditInputChange}
-                                                                        />
-                                                                    </td>
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    <td>{record.diagnosis}</td>
-                                                                    <td>{record.recommendations}</td>
-                                                                    <td>{record.performed_treatments}</td>
-                                                                    <td>{record.diagnosis_date}</td>
-                                                                </>
-                                                            )}
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
-                                                {editingRecordId === record.id ? (
-                                                    <div>
-                                                        <button
-                                                            onClick={() => handleSaveEdit(record.id)}
-                                                            className={styles.submitButton}
-                                                        >
-                                                            Zapisz
-                                                        </button>
-                                                        <button
-                                                            onClick={cancelEditing}
-                                                            className={styles.submitButton}
-                                                        >
-                                                            Anuluj
-                                                        </button>
-                                                    </div>
-                                                ) : (
-                                                    <button
-                                                        className={styles.submitButton}
-                                                        onClick={() => startEditing(record)}
-                                                    >
-                                                        Edytuj
-                                                    </button>
-                                                )}                                            
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p>Brak historii leczenia dla tego pacjenta.</p>
-                                    )}
-                                </div>
-                            )}
+                            {viewMode === "addRecord" && addRecord}
+                            {viewMode === "viewHistory" && viewHistory}
                         </div>
                     )}
                 </>

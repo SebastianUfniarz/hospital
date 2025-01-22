@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import styles from "./MyDataDoctor.module.css";
 import { useNavigate } from "react-router-dom";
 import { format, setDay } from "date-fns";
 import { pl } from "date-fns/locale";
 
+import styles from "../MyDataPatient/MyDataPatient.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
 import { IDoctor } from "../../types/IDoctor";
 
@@ -83,11 +83,11 @@ const MyDataDoctor: React.FC = () => {
 
     return (
         <div className={styles.root}>
-            <h3>Moje dane</h3>
+            <h2>Moje dane</h2>
             {loading && <div>Ładowanie danych...</div>}
             {!loading && !doctorData && <div>Nie znaleziono danych pacjenta.</div>}
             {!loading && doctorData && (
-                <div className={styles.dataContainer}>
+                <div>
                     <p><strong>Imię:</strong> {doctorData.first_name}</p>
                     <p><strong>Nazwisko:</strong> {doctorData.last_name}</p>
                     <p><strong>PESEL:</strong> {doctorData.pesel}</p>

@@ -53,6 +53,10 @@
     text-decoration: none;
 }
 
+.list>a:hover {
+    background-color: red;
+}
+
 .listRow {
     display: contents;
 }
@@ -62,7 +66,8 @@
 }
 
 .listCol {
-    padding-inline: 8px;
-    padding-block: 8px;
+    padding: 12px 16px;
     border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
 }

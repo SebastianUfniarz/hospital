@@ -83,7 +83,7 @@ const DoctorSchedule: React.FC = () => {
     return (
         <div className={styles.root}>
             <h2>Mój harmonogram</h2>
-            {loading && <div>Ładowanie...</div>}
+            {loading && <p>Ładowanie...</p>}
             {!loading && (
                 <div className={styles.calendarWrapper}>
                     <ScheduleXCalendar calendarApp={calendar} />

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import styles from "./MyDataPatient.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
-import { useNavigate } from "react-router-dom";
 import { IPatient } from "../../types/IPatient";
 
 const MyDataPatient: React.FC = () => {
@@ -67,11 +68,11 @@ const MyDataPatient: React.FC = () => {
 
     return (
         <div className={styles.root}>
-            <h3>Moje dane</h3>
+            <h2>Moje dane</h2>
             {loading && <div>Ładowanie danych...</div>}
             {!loading && !patientData && <div>Nie znaleziono danych pacjenta.</div>}
             {!loading && patientData && (
-                <div className={styles.dataContainer}>
+                <div>
                     <p><strong>Imię:</strong> {patientData.first_name}</p>
                     <p><strong>Nazwisko:</strong> {patientData.last_name}</p>
                     <p><strong>PESEL:</strong> {patientData.pesel}</p>

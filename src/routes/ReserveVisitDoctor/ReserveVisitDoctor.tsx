@@ -11,8 +11,15 @@ import { IDoctor } from "../../types/IDoctor";
 import IconButton from "../../components/IconButton/IconButton";
 import { IPatient } from "../../types/IPatient";
 import { IVisit } from "../../types/IVisit";
+import { format, setDay } from "date-fns";
 
 registerLocale("pl", pl);
+
+const formatTime = (hour: number, minute: number) => {
+    const formattedHour = String(hour).padStart(2, "0");
+    const formattedMinute = String(minute).padStart(2, "0");
+    return `${formattedHour}:${formattedMinute}`;
+};
 
 const ReserveVisitDoctor: React.FC = () => {
     const supabase = useSupabase();
@@ -125,9 +132,22 @@ const ReserveVisitDoctor: React.FC = () => {
                 <IoArrowBack size={24} />
             </IconButton>
             <h3>Rezerwacja wizyty</h3>
-            <div>{doctor.first_name} {doctor.last_name}, {doctor.specialization}</div>
+            <p><b>Lekarz:</b> {doctor.first_name} {doctor.last_name}, {doctor.specialization}</p>
+            <p><b>Godziny pracy:</b>
+                {doctor.work_time.map((wt) => {
+                    const day = format(setDay(new Date(), wt.day), "EEEE", { locale: pl });
+                    const start = formatTime(wt.starting_hour, wt.starting_minute);
+                    const end = formatTime(wt.ending_hour, wt.ending_minute);
+                    return (
+                        <div key={wt.day}>
+                            {start} - {end} − {day}
+                        </div>
+                    );
+                })}
+            </p>
             <div>
                 <DatePicker
+                    wrapperClassName={styles.datePicker}
                     showIcon
                     locale="pl"
                     showTimeSelect
@@ -142,7 +162,12 @@ const ReserveVisitDoctor: React.FC = () => {
                     onChange={(date) => { setSelectedDate(date); }}
                 />
             </div>
-            <button onClick={() => { void reserveVisit(); }}>Umów wizytę</button>
+            <button
+                className={styles.btn}
+                onClick={() => { void reserveVisit(); }}
+            >
+                Umów wizytę
+            </button>
         </div>
     );
 };

@@ -2,12 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    background-color: #f9f9f9;
-    height: 100%;
+    padding: 16px;
+    padding-inline: 48px;
     width: 100%;
-    overflow-y: auto;
-    box-sizing: border-box;
 }
 
 .patientTable {
@@ -17,28 +14,16 @@
 }
 
 .historyTable td {
-    white-space: normal;
-    word-wrap: break-word;
-    word-break: break-word;
-    vertical-align: top;
-    padding: 4px;
-    border: 1px solid #444;
+    padding-top: 8px;
 }
 
 .patientDetails,
 .editHistoryForm {
     margin-top: 20px;
     padding: 20px;
-    border: 1px solid #444;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    background-color: #fff;
-    width: 100%;
-    max-width: none;
-    box-sizing: border-box;
-}
-
-.empty {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     width: 100%;
 }
 
@@ -67,19 +52,19 @@ textarea {
 
 .submitButton {
     padding: 10px 15px;
-    font-size: 16px;
+    font-size: 1em;
     color: #fff;
-    background-color: #007bff;
+    background-color: var(--primary-btn-color);
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color .2s ease;
     margin-top: 16px;
     margin-right: 6px;
 }
 
 .submitButton:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-btn-hover-color);
 }
 
 .errorMessage {
@@ -94,7 +79,6 @@ textarea {
 
 .historyTable {
     width: 100%;
-    border-collapse: collapse;
     text-align: left;
     table-layout: fixed;
 }

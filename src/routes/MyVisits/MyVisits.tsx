@@ -85,7 +85,7 @@ const MyVisits: React.FC = () => {
 
     return (
         <div className={styles.root}>
-            <h3>Moje wizyty</h3>
+            <h2>Moje wizyty</h2>
             {loading && <div>Ładowanie...</div>}
             {(!loading && visits.length === 0) && <p>Brak umówionych wizyt.</p>}
             {(!loading && visits.length > 0) && (
@@ -106,7 +106,12 @@ const MyVisits: React.FC = () => {
                                 <div className={styles.listCol}>{doctor.last_name}</div>
                                 <div className={styles.listCol}>{doctor.specialization}</div>
                                 <div className={styles.listCol}>
-                                    <button onClick={() => { void cancelVisit(id); }}>Anuluj wizytę</button>
+                                    <button
+                                        className={styles.btn}
+                                        onClick={() => { void cancelVisit(id); }}
+                                    >
+                                        Anuluj wizytę
+                                    </button>
                                 </div>
                             </div>
                         );

@@ -42,9 +42,9 @@
     --accent-text-color: var(--text-color-inverted);
     --border-color: hsl(0, 0%, 85%);
     --border-color2: var(--border-color);
-    --primary-btn-color: hsl(217, 90%, 43%);
-    --primary-btn-hover-color: hsl(217, 90%, 45%);
-    --primary-btn-active-color: hsl(217, 90%, 40%);
+    --primary-btn-color: hsl(217, 90%, 48%);
+    --primary-btn-hover-color: hsl(217, 90%, 43%);
+    --primary-btn-active-color: hsl(217, 90%, 38%);
     --primary-btn-text-color: white;
     --icon-btn-hover-color: var(--bg-secondary);
     --icon-btn-active-color: hsl(213, 43%, 92%);
