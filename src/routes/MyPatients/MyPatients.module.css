@@ -16,6 +16,15 @@
     border-radius: 8px;
 }
 
+.historyTable td {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+    vertical-align: top;
+    padding: 4px;
+    border: 1px solid #444;
+}
+
 .patientDetails,
 .editHistoryForm {
     margin-top: 20px;
@@ -33,13 +42,24 @@
     width: 100%;
 }
 
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    resize: none;
+    field-sizing: content;
+}
+
 .patientSelect,
-.editHistoryForm>label>textarea,
 .editHistoryForm>label>input[type="date"] {
     width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
+    font-size: 16px;
     border-radius: 8px;
     margin-top: 8px;
     box-sizing: border-box;
