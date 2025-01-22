@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 import styles from "./MyDataDoctor.module.css";
-import { useSupabase } from "../../contexts/SupabaseProvider";
 import { useNavigate } from "react-router-dom";
+import { format, setDay } from "date-fns";
+import { pl } from "date-fns/locale";
+
+import { useSupabase } from "../../contexts/SupabaseProvider";
 import { IDoctor } from "../../types/IDoctor";
+
+const formatTime = (hour: number, minute: number) => {
+    const formattedHour = String(hour).padStart(2, "0");
+    const formattedMinute = String(minute).padStart(2, "0");
+    return `${formattedHour}:${formattedMinute}`;
+};
 
 interface Doctor extends IDoctor {
     birth_date: string;
@@ -86,11 +95,18 @@ const MyDataDoctor: React.FC = () => {
                     <p><strong>Numer telefonu:</strong> {doctorData.telephone}</p>
                     <p><strong>Email:</strong> {doctorData.email}</p>
                     <p><strong>Specializacja:</strong> {doctorData.specialization}</p>
-                    {/* <p><strong>Godziny pracy:</strong></p> */}
-                    {/* {doctorData.work_time.map(wt => (
-                        <div key={wt.day}>{wt.day} {wt.starting_hour}:{wt.starting_minute} - {wt.ending_hour}:{wt.ending_minute}</div>
-                    ))} */}
-
+                    <p><strong>Godziny pracy:</strong>
+                        {doctorData.work_time.map((wt) => {
+                            const day = format(setDay(new Date(), wt.day), "EEEE", { locale: pl });
+                            const start = formatTime(wt.starting_hour, wt.starting_minute);
+                            const end = formatTime(wt.ending_hour, wt.ending_minute);
+                            return (
+                                <div key={wt.day}>
+                                    {start} - {end} − {day}
+                                </div>
+                            );
+                        })}
+                    </p>
                     <button className={styles.btn} onClick={handleChangePasswordClick}>
                         Zmień haslo
                     </button>
