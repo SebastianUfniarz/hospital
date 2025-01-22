@@ -54,7 +54,8 @@ const MyVisits: React.FC = () => {
                         id, patient_id, doctor_id, date, confirmed,
                         patient(email),
                         doctor(first_name, last_name, specialization)`)
-                    .eq("patient.email", userEmail);
+                    .eq("patient.email", userEmail)
+                    .order("date");
 
                 const data = visitsRes.data as IData[] | null;
 
@@ -100,7 +101,7 @@ const MyVisits: React.FC = () => {
                         const date = new Date(dateStr);
                         return (
                             <div className={styles.listRow} key={id}>
-                                <div className={styles.listCol}>{date.toLocaleString()}</div>
+                                <div className={styles.listCol}>{date.toLocaleString().slice(0, -3)}</div>
                                 <div className={styles.listCol}>{doctor.first_name}</div>
                                 <div className={styles.listCol}>{doctor.last_name}</div>
                                 <div className={styles.listCol}>{doctor.specialization}</div>

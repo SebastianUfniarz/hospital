@@ -116,7 +116,7 @@ const ReserveVisitDoctor: React.FC = () => {
             return;
         }
 
-        navigate("/patient/reserve_visit", { state: "VISIT_RESERVED" });
+        navigate("/patient/my_visits", { state: "VISIT_RESERVED" });
     };
 
     return (

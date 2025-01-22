@@ -19,6 +19,9 @@ const messages = {
     day: "Dzień",
     allDay: "Cały dzień",
     noEventsInRange: "Brak wydarzeń w tym zakresie",
+    date: "Data",
+    time: "Godzina",
+    event: "Wizyta",
 };
 
 const locales = { "pl": pl };
@@ -99,7 +102,9 @@ const DoctorSchedule: React.FC = () => {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ height: 512 }}
+                style={{ height: "100%", width: "100%" }}
+                timeslots={8}
+                popup
             />
         </div>
     );

@@ -182,7 +182,6 @@ button.rbc-input::-moz-focus-inner {
 .rbc-toolbar button:active:focus,
 .rbc-toolbar button.rbc-active:hover,
 .rbc-toolbar button.rbc-active:focus {
-    background-color: var(--input-border-color);
     border-color: var(--border-color);
 }
 

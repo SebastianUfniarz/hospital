@@ -33,7 +33,7 @@ const TreatmentHistory: React.FC = () => {
                         patient(id),
                         doctor(first_name, last_name, specialization)`)
                     .eq("patient.id", patientRes.data?.id)
-                    .order("diagnosis_date");
+                    .order("diagnosis_date", { ascending: false });
 
                 const patientRecords = patientRecordsRes.data as unknown as IPatientRecordData[];
 

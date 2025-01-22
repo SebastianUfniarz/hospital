@@ -53,11 +53,9 @@ const DoctorApp: React.FC = () => {
         <>
             <AppHeader links={links} />
             <div className={styles.wrapper}>
-                <div className={styles.leftRight}>
-                    <Suspense>
-                        <Outlet />
-                    </Suspense>
-                </div>
+                <Suspense>
+                    <Outlet />
+                </Suspense>
             </div>
         </>
     );
