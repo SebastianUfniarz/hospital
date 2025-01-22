@@ -11,13 +11,13 @@ const links = [
         name: "Mój harmonogram",
     },
     {
+        pathname: "/doctor/visits",
+        name: "Wizyty",
+    },
+    {
         pathname: "/doctor/my_patients",
         name: "Moi pacjenci",
     },
-    // {
-    //     pathname: "/doctor/treatment_history",
-    //     name: "Historia leczenia",
-    // },
     {
         pathname: "/doctor/my_data",
         name: "Moje dane",

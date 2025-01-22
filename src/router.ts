@@ -18,6 +18,7 @@ import RegisterDoctor from "./routes/RegisterDoctor/RegisterDoctor.tsx";
 import ReserveVisitDoctor from "./routes/ReserveVisitDoctor/ReserveVisitDoctor.tsx";
 import MyVisits from "./routes/MyVisits/MyVisits.tsx";
 import MyDataDoctor from "./routes/MyDataDoctor/MyDataDoctor.tsx";
+import DoctorVisits from "./routes/DoctorVisits/DoctorVisits.tsx";
 
 const router = createBrowserRouter([
     {
@@ -67,6 +68,11 @@ const router = createBrowserRouter([
             {
                 path: "/doctor",
                 Component: DoctorSchedule,
+                ErrorBoundary: ErrorPage,
+            },
+            {
+                path: "/doctor/visits",
+                Component: DoctorVisits,
                 ErrorBoundary: ErrorPage,
             },
             {
