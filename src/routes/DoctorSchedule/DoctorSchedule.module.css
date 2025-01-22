@@ -1,6 +1,12 @@
 .root {
-    padding: 32px;
+    padding-block: 16px;
+    padding-inline: 48px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 100%;
+}
+
+.calendarWrapper {
+    width: inherit;
 }
