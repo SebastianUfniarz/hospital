@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { format } from "date-fns";
 import { useSupabase } from "../../contexts/SupabaseProvider";
 import styles from "./MyPatients.module.css";
 import { IPatient } from "../../types/IPatient";
@@ -201,7 +202,8 @@ const MyPatients: React.FC = () => {
                     <input
                         type="date"
                         name="diagnosis_date"
-                        value={formData.diagnosis_date ?? ""}
+                        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+                        value={formData.diagnosis_date || format(new Date(), "yyyy-MM-dd")}
                         onChange={handleInputChange}
                         required
                     />
@@ -331,7 +333,7 @@ const MyPatients: React.FC = () => {
                     </select>
 
                     {selectedPatient && (
-                        <div>
+                        <div style={{ width: "100%" }}>
                             <div className={styles.patientDetails}>
                                 <h3>Szczegóły pacjenta</h3>
                                 <p><b>Imię:</b> {selectedPatient.first_name}</p>
