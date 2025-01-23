@@ -17,7 +17,7 @@ const DoctorVisits: React.FC = () => {
     const [visits, setVisits] = useState<IData[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
-    const [actionLoading, setActionLoading] = useState<{ [key: number]: boolean }>({});
+    const [actionLoading, setActionLoading] = useState<Record<number, boolean>>({});
     const [reload, setReload] = useState(false);
 
     const cancelVisit = async (id: number) => {
@@ -25,7 +25,7 @@ const DoctorVisits: React.FC = () => {
         if (!confirmAction) return;
 
         try {
-            setActionLoading((prev) => ({ ...prev, [id]: true }));
+            setActionLoading(prev => ({ ...prev, [id]: true }));
             const res = await supabase
                 .from("visit")
                 .delete()
@@ -34,8 +34,8 @@ const DoctorVisits: React.FC = () => {
 
             if (res.error) {
                 setError("Nie udało się anulować wizyty!");
-            } else if (res.data && res.data.length > 0) {
-                setReload((prev) => !prev);
+            } else if (res.data.length > 0) {
+                setReload(prev => !prev);
                 alert("Wizyta została pomyślnie anulowana.");
             } else {
                 setError("Wizyta nie została znaleziona lub już anulowana.");
@@ -43,7 +43,7 @@ const DoctorVisits: React.FC = () => {
         } catch {
             setError("Wystąpił błąd podczas anulowania wizyty.");
         } finally {
-            setActionLoading((prev) => ({ ...prev, [id]: false }));
+            setActionLoading(prev => ({ ...prev, [id]: false }));
         }
     };
 
@@ -52,7 +52,7 @@ const DoctorVisits: React.FC = () => {
         if (!confirmAction) return;
 
         try {
-            setActionLoading((prev) => ({ ...prev, [id]: true }));
+            setActionLoading(prev => ({ ...prev, [id]: true }));
             const res = await supabase
                 .from("visit")
                 .update({ confirmed: true })
@@ -61,8 +61,8 @@ const DoctorVisits: React.FC = () => {
 
             if (res.error) {
                 setError("Nie udało się potwierdzić wizyty!");
-            } else if (res.data && res.data.length > 0) {
-                setReload((prev) => !prev);
+            } else if (res.data.length > 0) {
+                setReload(prev => !prev);
                 alert("Wizyta została pomyślnie potwierdzona.");
             } else {
                 setError("Wizyta nie została znaleziona.");
@@ -70,7 +70,7 @@ const DoctorVisits: React.FC = () => {
         } catch {
             setError("Wystąpił błąd podczas potwierdzania wizyty.");
         } finally {
-            setActionLoading((prev) => ({ ...prev, [id]: false }));
+            setActionLoading(prev => ({ ...prev, [id]: false }));
         }
     };
 
@@ -98,7 +98,7 @@ const DoctorVisits: React.FC = () => {
 
                 if (visitsRes.error) {
                     setError("Nie udało się pobrać danych lekarza.");
-                } else if (!visitsRes.data || visitsRes.data.length === 0) {
+                } else if (visitsRes.data.length === 0) {
                     setError("Nie znaleziono żadnych wizyt.");
                 } else {
                     setVisits(visitsRes.data as unknown as IData[]);
@@ -110,7 +110,7 @@ const DoctorVisits: React.FC = () => {
             }
         };
 
-        fetchVisits();
+        void fetchVisits();
     }, [supabase, reload]);
 
     if (error) {
@@ -148,14 +148,14 @@ const DoctorVisits: React.FC = () => {
                                         <>
                                             <button
                                                 className={styles.btnConfirm}
-                                                onClick={() => confirmVisit(id)}
+                                                onClick={() => void confirmVisit(id)}
                                                 disabled={actionLoading[id]}
                                             >
                                                 {actionLoading[id] ? "Potwierdzanie..." : "Potwierdź wizytę"}
                                             </button>
                                             <button
                                                 className={styles.btnCancel}
-                                                onClick={() => cancelVisit(id)}
+                                                onClick={() => void cancelVisit(id)}
                                                 disabled={actionLoading[id]}
                                             >
                                                 {actionLoading[id] ? "Anulowanie..." : "Anuluj wizytę"}
