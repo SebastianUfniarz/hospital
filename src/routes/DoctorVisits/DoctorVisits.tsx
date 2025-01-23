@@ -57,11 +57,12 @@ const DoctorVisits: React.FC = () => {
                 .from("visit")
                 .update({ confirmed: true })
                 .eq("id", id)
-                .select();
+                .select()
+                .single();
 
             if (res.error) {
                 setError("Nie udało się potwierdzić wizyty!");
-            } else if (res.data.length > 0) {
+            } else if (res.data) {
                 setReload(prev => !prev);
                 alert("Wizyta została pomyślnie potwierdzona.");
             } else {
@@ -87,13 +88,24 @@ const DoctorVisits: React.FC = () => {
 
                 const userEmail = session.session.user.email;
 
+                const user = await supabase
+                    .from("doctor")
+                    .select("id, email")
+                    .eq("email", userEmail)
+                    .single();
+
+                if (!user.data) {
+                    setError("Nie odnaleziono konta doktora!");
+                    return;
+                }
+
                 const visitsRes = await supabase
                     .from("visit")
                     .select(`
                         id, patient_id, doctor_id, date, confirmed,
                         patient(first_name, last_name, email, pesel),
                         doctor(first_name, last_name, specialization)`)
-                    .eq("doctor.email", userEmail)
+                    .eq("doctor_id", user.data.id)
                     .order("date", { ascending: true });
 
                 if (visitsRes.error) {
