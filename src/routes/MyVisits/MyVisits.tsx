@@ -95,9 +95,10 @@ const MyVisits: React.FC = () => {
                         <div className={styles.listCol}>Imię</div>
                         <div className={styles.listCol}>Nazwisko</div>
                         <div className={styles.listCol}>Specjalizacja</div>
+                        <div className={styles.listCol}>Zatwierdzona</div>
                         <div className={styles.listCol}>Opcje</div>
                     </div>
-                    {visits.map(({ id, date: dateStr, doctor }) => {
+                    {visits.map(({ id, date: dateStr, doctor, confirmed }) => {
                         const date = new Date(dateStr);
                         return (
                             <div className={styles.listRow} key={id}>
@@ -105,6 +106,7 @@ const MyVisits: React.FC = () => {
                                 <div className={styles.listCol}>{doctor.first_name}</div>
                                 <div className={styles.listCol}>{doctor.last_name}</div>
                                 <div className={styles.listCol}>{doctor.specialization}</div>
+                                <div className={styles.listCol}>{confirmed ? "Tak" : "Nie"}</div>
                                 <div className={styles.listCol}>
                                     <button
                                         className={styles.btn}
