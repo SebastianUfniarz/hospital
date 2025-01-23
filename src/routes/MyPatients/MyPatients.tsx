@@ -104,7 +104,7 @@ const MyPatients: React.FC = () => {
                 diagnosis: "",
                 recommendations: "",
                 performed_treatments: "",
-                diagnosis_date: "",
+                diagnosis_date: format(new Date(), "yyyy-MM-dd"),
                 patient_id: undefined,
                 doctor_id: undefined,
             });
@@ -202,8 +202,8 @@ const MyPatients: React.FC = () => {
                     <input
                         type="date"
                         name="diagnosis_date"
-                        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-                        value={formData.diagnosis_date || format(new Date(), "yyyy-MM-dd")}
+
+                        value={formData.diagnosis_date ?? format(new Date(), "yyyy-MM-dd")}
                         onChange={handleInputChange}
                         required
                     />
