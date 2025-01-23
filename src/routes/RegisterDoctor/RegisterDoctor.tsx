@@ -5,6 +5,7 @@ import { IoArrowBack, IoWarning } from "react-icons/io5";
 import styles from "../Login/Login.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
 import IconButton from "../../components/IconButton/IconButton";
+import { extractBirthDateFromPesel, isValidPesel } from "../RegisterPatient/pesel";
 
 interface AuthFormTarget extends EventTarget {
     email: HTMLInputElement;
@@ -16,8 +17,8 @@ interface UserDataFormTarget extends EventTarget {
     firstName: HTMLInputElement;
     lastName: HTMLInputElement;
     pesel: HTMLInputElement;
-    birthDate: HTMLInputElement;
     telephone: HTMLInputElement;
+    specialization: HTMLInputElement;
 }
 
 interface AuthCredentials {
@@ -38,15 +39,21 @@ const RegisterDoctor: React.FC = () => {
         const firstName = target.firstName.value;
         const lastName = target.lastName.value;
         const pesel = target.pesel.value;
-        const birthDate = target.birthDate.value;
         const telephone = target.telephone.value;
+        const specialization = target.specialization.value;
         const { email } = authCredentials;
+
+        if (!isValidPesel(pesel)) {
+            setErrorMessage("PESEL jest nieprawidłowy!");
+            return;
+        }
+
+        const birthDate = extractBirthDateFromPesel(pesel);
 
         const res = await supabase.auth.signUp({
             email: authCredentials.email,
             password: authCredentials.password,
         });
-        console.log(res);
 
         if (res.error) {
             setErrorMessage(res.error.message);
@@ -60,8 +67,8 @@ const RegisterDoctor: React.FC = () => {
             telephone,
             email,
             pesel,
+            specialization,
         });
-        console.log(res2);
 
         if (res2.error) {
             setErrorMessage(res2.error.message);
@@ -99,7 +106,7 @@ const RegisterDoctor: React.FC = () => {
                 <form onSubmit={handleClickNext} style={{ display: isNext ? "none" : "block" }}>
                     <input
                         required
-                        type="text"
+                        type="email"
                         name="email"
                         placeholder="Email"
                         className={styles.textInput}
@@ -120,6 +127,12 @@ const RegisterDoctor: React.FC = () => {
                         placeholder="Powtórz hasło"
                         className={styles.textInput}
                     />
+                    {errorMessage && (
+                        <div className={styles.errorMessage}>
+                            <IoWarning size={22} />
+                            {errorMessage}
+                        </div>
+                    )}
                     <input
                         type="submit"
                         value="Dalej"
@@ -147,24 +160,28 @@ const RegisterDoctor: React.FC = () => {
                     />
                     <input
                         required
-                        type="number"
+                        type="text"
                         name="pesel"
                         placeholder="PESEL"
+                        minLength={11}
+                        maxLength={11}
                         className={styles.textInput}
                     />
                     <input
                         required
                         type="text"
-                        name="birthDate"
-                        placeholder="Data urodzenia (RRRR-MM-DD)"
+                        name="telephone"
+                        placeholder="Numer telefonu"
+                        minLength={9}
+                        maxLength={12}
+                        pattern="(\+)?[0-9]{7,15}"
                         className={styles.textInput}
                     />
                     <input
                         required
-                        minLength={9}
-                        type="number"
-                        name="telephone"
-                        placeholder="Numer telefonu"
+                        type="text"
+                        name="specialization"
+                        placeholder="Specjalizacja"
                         className={styles.textInput}
                     />
                     <div className={styles.checkboxContainer}>

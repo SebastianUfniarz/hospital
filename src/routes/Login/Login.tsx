@@ -48,7 +48,7 @@ const Login: React.FC = () => {
                     <div className={styles.heading}>Logowanie</div>
                     <input
                         required
-                        type="text"
+                        type="email"
                         name="email"
                         placeholder="Email"
                         className={styles.textInput}
