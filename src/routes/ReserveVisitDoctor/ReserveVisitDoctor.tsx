@@ -21,12 +21,17 @@ const formatTime = (hour: number, minute: number) => {
     return `${formattedHour}:${formattedMinute}`;
 };
 
+const validateDate = (doctor: IDoctor, date: Date) => {
+    return doctor.work_time.some(w => date.getDay() === w.day);
+};
+
 const ReserveVisitDoctor: React.FC = () => {
     const supabase = useSupabase();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [doctor, setDoctor] = useState<IDoctor>();
-    const [visits, setVisits] = useState<IVisit[]>();
+    const [errorMessage, setErrorMessage] = useState<string>();
+    const [visits, setVisits] = useState<IVisit[]>([]);
     const doctorId = useLoaderData() as string;
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -65,21 +70,7 @@ const ReserveVisitDoctor: React.FC = () => {
         void handleSearch();
     }, [doctorId, supabase]);
 
-    if (loading) {
-        return <div className={styles.root}>Ładowanie...</div>;
-    }
-    if (!doctor) {
-        return <div className={styles.root}>Błąd! Nie ma takiego lekarza!</div>;
-    }
-    if (!visits) {
-        return <div className={styles.root}>Błąd! Brak wizyt!</div>;
-    }
-
-    const validateDate = (date: Date) => {
-        return doctor.work_time.some(w => date.getDay() === w.day);
-    };
-
-    const validateDateTime = (date: Date | null) => {
+    const validateDateTime = (doctor: IDoctor, date: Date | null) => {
         if (!(date instanceof Date)) return false;
         const hour = date.getHours();
         const minute = date.getMinutes();
@@ -97,9 +88,8 @@ const ReserveVisitDoctor: React.FC = () => {
     };
 
     const reserveVisit = async () => {
-        if (!validateDateTime(selectedDate)) {
-            return;
-        }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if (!validateDateTime(doctor!, selectedDate)) return;
 
         const session = await supabase.auth.getSession();
         const patientRes = await supabase.from("patient")
@@ -119,7 +109,7 @@ const ReserveVisitDoctor: React.FC = () => {
         console.log(res);
 
         if (res.error) {
-            // setErrorMessage(res.error.message);
+            setErrorMessage(res.error.message);
             return;
         }
 
@@ -128,46 +118,53 @@ const ReserveVisitDoctor: React.FC = () => {
 
     return (
         <div className={styles.root}>
-            <IconButton title="Cofnij" onClick={() => { navigate(-1); }}>
+            <h2>Rezerwacja wizyty</h2>
+            <IconButton title="Cofnij" chipVariant onClick={() => { navigate(-1); }}>
                 <IoArrowBack size={24} />
+                Cofnij
             </IconButton>
-            <h3>Rezerwacja wizyty</h3>
-            <p><b>Lekarz:</b> {doctor.first_name} {doctor.last_name}, {doctor.specialization}</p>
-            <p><b>Godziny pracy:</b>
-                {doctor.work_time.map((wt) => {
-                    const day = format(setDay(new Date(), wt.day), "EEEE", { locale: pl });
-                    const start = formatTime(wt.starting_hour, wt.starting_minute);
-                    const end = formatTime(wt.ending_hour, wt.ending_minute);
-                    return (
-                        <div key={wt.day}>
-                            {start} - {end} − {day}
-                        </div>
-                    );
-                })}
-            </p>
-            <div>
-                <DatePicker
-                    wrapperClassName={styles.datePicker}
-                    showIcon
-                    locale="pl"
-                    showTimeSelect
-                    dateFormat="Pp"
-                    timeCaption="Godzina"
-                    placeholderText="Wybierz termin"
-                    popperPlacement="bottom-end"
-                    selected={selectedDate}
-                    minDate={new Date()}
-                    filterDate={validateDate}
-                    filterTime={validateDateTime}
-                    onChange={(date) => { setSelectedDate(date); }}
-                />
-            </div>
-            <button
-                className={styles.btn}
-                onClick={() => { void reserveVisit(); }}
-            >
-                Umów wizytę
-            </button>
+            {errorMessage && <p>{errorMessage}</p>}
+            {loading && <p>Ładowanie...</p>}
+            {!loading && !errorMessage && doctor && (
+                <>
+                    <p><b>Lekarz:</b> {doctor.first_name} {doctor.last_name}, {doctor.specialization}</p>
+                    <p><b>Godziny pracy:</b>
+                        {doctor.work_time.map((wt) => {
+                            const day = format(setDay(new Date(), wt.day), "EEEE", { locale: pl });
+                            const start = formatTime(wt.starting_hour, wt.starting_minute);
+                            const end = formatTime(wt.ending_hour, wt.ending_minute);
+                            return (
+                                <div key={wt.day}>
+                                    {start} - {end} − {day}
+                                </div>
+                            );
+                        })}
+                    </p>
+                    <div>
+                        <DatePicker
+                            wrapperClassName={styles.datePicker}
+                            showIcon
+                            locale="pl"
+                            showTimeSelect
+                            dateFormat="Pp"
+                            timeCaption="Godzina"
+                            placeholderText="Wybierz termin"
+                            popperPlacement="bottom-end"
+                            selected={selectedDate}
+                            minDate={new Date()}
+                            filterDate={date => validateDate(doctor, date)}
+                            filterTime={time => validateDateTime(doctor, time)}
+                            onChange={(date) => { setSelectedDate(date); }}
+                        />
+                    </div>
+                    <button
+                        className={styles.btn}
+                        onClick={() => { void reserveVisit(); }}
+                    >
+                        Umów wizytę
+                    </button>
+                </>
+            )}
         </div>
     );
 };

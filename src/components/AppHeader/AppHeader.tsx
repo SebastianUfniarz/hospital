@@ -27,7 +27,7 @@ const AppHeader: React.FC<IProps> = ({ className, links }) => {
                     <Link
                         to={l.pathname}
                         key={l.pathname}
-                        className={clsx(l.pathname === location.pathname && styles.activeNav)}
+                        className={clsx(location.pathname.includes(l.pathname) && styles.activeNav)}
                     >
                         {l.name}
                     </Link>

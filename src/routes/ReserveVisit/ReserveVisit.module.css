@@ -44,7 +44,7 @@
 
 .list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .list>a {
@@ -57,11 +57,8 @@
     background-color: red;
 }
 
-.listRow {
-    display: contents;
-}
-
 .listHeadingRow {
+    display: contents;
     font-weight: bold;
 }
 
@@ -70,4 +67,19 @@
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
+}
+
+.btn {
+    padding: 10px 12px;
+    color: #fff;
+    background-color: var(--primary-btn-color);
+    border: none;
+    border-radius: 32px;
+    cursor: pointer;
+    transition: background-color .2s ease;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: var(--primary-btn-hover-color);
 }

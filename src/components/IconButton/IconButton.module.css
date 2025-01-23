@@ -8,10 +8,22 @@
     transition: .2s background-color;
 }
 
+
 .root:hover {
     background-color: var(--icon-btn-hover-color);
 }
 
 .root:active {
     background-color: var(--icon-btn-active-color);
+}
+
+.chipVariant {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    background-color: var(--icon-btn-hover-color);
+}
+
+.chipVariant>svg {
+    margin-right: 4px;
 }

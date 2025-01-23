@@ -6,13 +6,14 @@ interface IProps {
     children: React.ReactNode;
     title: string;
     className?: string;
+    chipVariant?: boolean;
     onClick?: () => void;
 }
 
-const IconButton: React.FC<IProps> = ({ children, title, className, onClick }) => {
+const IconButton: React.FC<IProps> = ({ children, title, chipVariant, className, onClick }) => {
     return (
         <button
-            className={clsx(styles.root, className)}
+            className={clsx(styles.root, chipVariant && styles.chipVariant, className)}
             title={title}
             onClick={onClick}
         >

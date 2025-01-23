@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import clsx from "clsx/lite";
+import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./ReserveVisit.module.css";
 import { useSupabase } from "../../contexts/SupabaseProvider";
@@ -8,6 +7,7 @@ import { IDoctor } from "../../types/IDoctor";
 
 const ReserveVisit: React.FC = () => {
     const supabase = useSupabase();
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
     const [specialization, setSpecialization] = useState("");
     const [doctors, setDoctors] = useState<IDoctor[]>([]);
@@ -44,6 +44,7 @@ const ReserveVisit: React.FC = () => {
 
     return (
         <div className={styles.root}>
+            <h2>Rezerwacja wizyty</h2>
             <div className={styles.searchingFiltersContainer}>
                 <div className={styles.searchingFiltersItem}>
                     <div>
@@ -76,31 +77,33 @@ const ReserveVisit: React.FC = () => {
                     </select>
                 </div>
             </div>
-            <h3>Wyniki wyszukiwania</h3>
-            {(!loading && doctors.length === 0)
-                ? (<p>Brak wyników.</p>)
-                : (
-                        <div className={styles.list}>
-                            <div className={clsx(styles.listHeadingRow, styles.listRow)}>
-                                <div className={styles.listCol}>Imię</div>
-                                <div className={styles.listCol}>Nazwisko</div>
-                                <div className={styles.listCol}>Specjalizacja</div>
-                            </div>
-                            {doctors.map(doctor => (
-                                <Link
-                                    key={doctor.id}
-                                    to={doctor.id.toString()}
+            <h4>Wyniki wyszukiwania</h4>
+            {!loading && doctors.length === 0 && <p>Brak wyników.</p>}
+            {!loading && doctors.length !== 0 && (
+                <div className={styles.list}>
+                    <div className={styles.listHeadingRow}>
+                        <div className={styles.listCol}>Imię</div>
+                        <div className={styles.listCol}>Nazwisko</div>
+                        <div className={styles.listCol}>Specjalizacja</div>
+                        <div className={styles.listCol}>Opcje</div>
+                    </div>
+                    {doctors.map(doctor => (
+                        <Fragment key={doctor.id}>
+                            <div className={styles.listCol}>{doctor.first_name}</div>
+                            <div className={styles.listCol}>{doctor.last_name}</div>
+                            <div className={styles.listCol}>{doctor.specialization}</div>
+                            <div className={styles.listCol}>
+                                <button
+                                    className={styles.btn}
+                                    onClick={() => { navigate(doctor.id.toString()); }}
                                 >
-                                    <div className={styles.listRow} key={doctor.id}>
-
-                                        <div className={styles.listCol}>{doctor.first_name}</div>
-                                        <div className={styles.listCol}>{doctor.last_name}</div>
-                                        <div className={styles.listCol}>{doctor.specialization}</div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    )}
+                                    Wybierz
+                                </button>
+                            </div>
+                        </Fragment>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
