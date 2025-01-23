@@ -73,12 +73,16 @@ const RegisterPatient: React.FC = () => {
 
     const handleClickNext = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setErrorMessage(undefined);
         const target = e.target as AuthFormTarget;
         const email = target.email.value;
         const password = target.password.value;
         const confirmPassword = target.confirmPassword.value;
 
-        if (password !== confirmPassword) throw Error("Hasła się nie zgadzają!");
+        if (password !== confirmPassword) {
+            setErrorMessage("Hasła się nie zgadzają!");
+            return;
+        }
 
         setAuthCredentials({ email, password });
         setNext(true);
@@ -118,6 +122,12 @@ const RegisterPatient: React.FC = () => {
                             placeholder="Powtórz hasło"
                             className={styles.textInput}
                         />
+                        {errorMessage && (
+                            <div className={styles.errorMessage}>
+                                <IoWarning size={22} />
+                                {errorMessage}
+                            </div>
+                        )}
                         <input
                             type="submit"
                             value="Dalej"
