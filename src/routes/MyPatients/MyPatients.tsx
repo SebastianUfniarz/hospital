@@ -4,6 +4,11 @@ import { useSupabase } from "../../contexts/SupabaseProvider";
 import styles from "./MyPatients.module.css";
 import { IPatient } from "../../types/IPatient";
 import { IPatientRecord } from "../../types/IPatientRecord";
+import { IVisit } from "../../types/IVisit";
+
+interface VisitWithPatient extends Pick<IVisit, "patient_id" | "doctor_id"> {
+    patient: IPatient;
+}
 
 const MyPatients: React.FC = () => {
     const supabase = useSupabase();
@@ -27,12 +32,6 @@ const MyPatients: React.FC = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const { data: patientsData, error: patientsError } = await supabase
-                    .from("patient")
-                    .select("*");
-                if (patientsError) throw patientsError;
-                setPatients(patientsData);
-
                 const session = await supabase.auth.getSession();
                 const { data: doctorData, error: doctorError } = await supabase
                     .from("doctor")
@@ -42,6 +41,21 @@ const MyPatients: React.FC = () => {
                 if (doctorError) throw doctorError;
 
                 setDoctorId(doctorData.id as number);
+
+                const res = await supabase
+                    .from("visit")
+                    .select("patient_id, doctor_id, patient(*)")
+                    .eq("doctor_id", doctorData.id);
+
+                const patientsData = res.data as unknown as VisitWithPatient[];
+
+                if (res.error) throw res.error;
+                console.log(patientsData);
+
+                const uniquePatients = Array.from(new Set(patientsData.map(visit => visit.patient.id)))
+                    .map(id => patientsData.find(visit => visit.patient.id === id)?.patient);
+
+                setPatients(uniquePatients as IPatient[]);
             } catch (error) {
                 console.error(error);
                 setErrorMessage("Nie udało się załadować danych");
